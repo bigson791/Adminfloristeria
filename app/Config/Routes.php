@@ -17,4 +17,9 @@ $routes->get('ClientesEliminados', 'Clientes::seeDeleteCustumer');
 $routes->get('reingresarCliente/(:num)', 'Clientes::reEnterCusumer/$1');
 #n/rutas de clientes
 
+#Rutas de productos
+$routes->get('productos', 'Productos::index');
+
+#/Rutas de productos
+
 $routes->get('login', 'Login::index');

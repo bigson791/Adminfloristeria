@@ -37,8 +37,6 @@
         </div>
         <script src="<?php echo base_url()?>js/bootstrap.bundle.min.js"></script>
         <script src="<?php echo base_url()?>js/scripts.js"></script>
-        <script src="<?php echo base_url()?>js/datatables-simple-demo.js"></script>
-        <script src="<?php echo base_url()?>js/datatables-simple-demo.js"></script>
         <script src="<?php echo base_url()?>js/jquery.dataTables.min.js"></script>
     </body>
 </html>

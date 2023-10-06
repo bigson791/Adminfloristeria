@@ -11,7 +11,7 @@
                         </div>
                         <div class="card mb-4">
                             <div class="table table-responsive"="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                                <table class="table-sm display nowrap dataTable dtr-inline collapsed" id="tablaClientes" style="width: 100%;">
+                                <table class="table-sm display dataTable dtr-inline collapsed" id="tablaClientes" style="width: 100%;">
                                     <thead>
                                         <th>Nombres</th>
                                         <th>Apellidos</th>

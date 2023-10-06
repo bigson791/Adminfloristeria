@@ -69,7 +69,7 @@
                             </a>
                             <div class="collapse" id="collapseProductos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="">Ver Productos</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>productos">Ver Productos</a>
                                     <a class="nav-link" href="">Agregar</a>
                                 </nav>
                             </div>
@@ -81,7 +81,7 @@
                             </a>
                             <div class="collapse" id="collapsePedidos" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="">Ver Pedidos</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>verProductos">Ver Pedidos</a>
                                     <a class="nav-link" href="">Agregar</a>
                                 </nav>
                             </div>
