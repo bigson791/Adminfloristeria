@@ -19,6 +19,8 @@ $routes->get('reingresarCliente/(:num)', 'Clientes::reEnterCusumer/$1');
 
 #Rutas de productos
 $routes->get('productos', 'Productos::index');
+$routes->get('NuevoProducto', 'Productos::newProduct');
+$routes->post('insertarProducto', 'Productos::insertProduct');
 
 #/Rutas de productos
 

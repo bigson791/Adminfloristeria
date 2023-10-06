@@ -13,8 +13,8 @@ class ProductoModelo extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['pr_cod_pagina', 'pr_descripcion','pr_precio_normal',  'pr_precio_rebajado','pr_imagen', 
-    'pr_estado'];
+    protected $allowedFields = ['pr_cod_pagina','pr_nombre', 'pr_descripcion','pr_precio_normal', 'pr_precio_rebajado','pr_imagen', 
+    'pr_empresa','pr_estado'];
 
     // Dates
     protected $useTimestamps = true;

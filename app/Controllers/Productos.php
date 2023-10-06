@@ -22,6 +22,23 @@ public function index($activo = 'A'){
 
 }
 
+public function newProduct(){
+    $data = ['titulo'=>'Agregar Nuevo Producto',];
+
+    echo view('header');
+    echo view('productos/NuevoProducto',$data);
+    echo view('footer');
+}
+
+public function insertProduct(){
+    $this->productos->save(['pr_nomb    re' => $this->request->getPost('nombreProducto'), 'pr_descripcion' => $this->request->getPost('descripcionProducto'),
+    'pr_precio_normal' => $this->request->getPost('precioNormal'), 'pr_precio_rebajado' => $this->request->getPost('precioRebajado'),
+    'pr_imagen' => $this->request->getPost('urlImgProd'),'pr_empresa' => $this->request->getPost('empresa'), 
+    'pr_estado' => 'A'] 
+);
+return redirect()->to(base_url()."productos");
+                                                        
+}
 
 
 
