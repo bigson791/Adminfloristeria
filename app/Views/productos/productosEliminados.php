@@ -4,8 +4,7 @@
       <h3 class="mt-4"><?php echo $titulo ?></h3>
       <div>
         <p>
-          <a href="<?php echo base_url() ?>NuevoProducto" class="btn btn-info"> <i class="fa-solid fa-box"></i> Agregar Producto</a>
-          <a href="<?php echo base_url() ?>ProductosEliminados" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
+          <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>productos"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
         </p>
       </div>
       <div class="card mb-4">
@@ -19,7 +18,6 @@
               <th>Precio Rebajado</th>
               <th>Diseño</th>
               <th></th>
-              <th></th>
             </thead>
             <tbody>
               <?php foreach ($productos as $dato) { ?>
@@ -30,8 +28,7 @@
                   <td><?php echo $dato['pr_precio_normal']; ?></td>
                   <td><?php echo $dato['pr_precio_rebajado']; ?></td>
                   <td><img src="<?php echo $dato['pr_imagen']; ?>" heigh="150px;" width="150px;"></td>
-                  <td><a href="<?php echo base_url() . 'EditarProducto/' . $dato['pr_id']?>" class="btn btn-warning" title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
-                  <td><a href="<?php echo base_url() . 'eliminarProducto/' . $dato['pr_id'] ?>" class="btn btn-danger" title="Eliminar Cliente"> <i class="fa-solid fa-trash"></i></a></td>
+                  <td><a href="<?php echo base_url() . 'reingresarProducto/' . $dato['pr_id'] ?>" class="btn btn-primary" title="Regresar Registro"> <i class="fa-solid fa-turn-up"></i></a></td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -75,10 +72,6 @@
           {
             width: "70px",
             targets: 6
-          },
-          {
-            width: "70px",
-            targets: 7
           }
         ],
         language: {

@@ -21,6 +21,12 @@ $routes->get('reingresarCliente/(:num)', 'Clientes::reEnterCusumer/$1');
 $routes->get('productos', 'Productos::index');
 $routes->get('NuevoProducto', 'Productos::newProduct');
 $routes->post('insertarProducto', 'Productos::insertProduct');
+$routes->get('EditarProducto/(:num)', 'Productos::upProduct/$1');
+$routes->post('actualizarProducto', 'Productos::updateProduct');
+$routes->get('eliminarProducto/(:num)','Productos::deleteProduct/$1');
+$routes->get('ProductosEliminados', 'Productos::seeDeleteProduct');
+$routes->get('reingresarProducto/(:num)', 'Productos::reEnterProduct/$1');
+
 
 #/Rutas de productos
 

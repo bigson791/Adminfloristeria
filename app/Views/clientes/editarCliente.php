@@ -2,7 +2,7 @@
 <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h3 class="mt-4"><?php echo $titulo.' '.$datos['cl_nombres'].' '.$datos['cl_apellidos']?></h3> 
+                        <h3 class="mt-4"><?php echo $titulo.' &#8594; '.$datos['cl_nombres'].' '.$datos['cl_apellidos']?></h3> 
                         <div class="card mb-4">
                             <form method="post" action="<?php echo base_url();?>actualizarCliente" autocomplete="off">
                                 <div class="form-group">

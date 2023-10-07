@@ -22,6 +22,18 @@ public function index($activo = 'A'){
 
 }
 
+
+public function seeDeleteProduct($activo = 'E'){
+
+    $productos = $this->productos->where('pr_estado', $activo)->findAll();
+    $data = ['titulo'=>'Productos Eliminados','productos'=>$productos];
+
+    echo view('header');
+    echo view('productos/productosEliminados',$data);
+    echo view('footer');
+
+}
+
 public function newProduct(){
     $data = ['titulo'=>'Agregar Nuevo Producto',];
 
@@ -31,7 +43,7 @@ public function newProduct(){
 }
 
 public function insertProduct(){
-    $this->productos->save(['pr_nomb    re' => $this->request->getPost('nombreProducto'), 'pr_descripcion' => $this->request->getPost('descripcionProducto'),
+    $this->productos->save(['pr_nombre' => $this->request->getPost('nombreProducto'), 'pr_descripcion' => $this->request->getPost('descripcionProducto'),
     'pr_precio_normal' => $this->request->getPost('precioNormal'), 'pr_precio_rebajado' => $this->request->getPost('precioRebajado'),
     'pr_imagen' => $this->request->getPost('urlImgProd'),'pr_empresa' => $this->request->getPost('empresa'), 
     'pr_estado' => 'A'] 
@@ -40,19 +52,44 @@ return redirect()->to(base_url()."productos");
                                                         
 }
 
+public function upProduct(string $idProducto){
+    $producto = $this->productos->where('pr_id', $idProducto)->first();
+    $data = ['titulo'=>'Editando Producto', 'datos'=> $producto];
+    
+    echo view('header');
+    echo view('productos/editarProducto',$data);
+    echo view('footer');
+
+}
+
+
+public function updateProduct()
+{
+    $this->productos->update($this->request->getPost('codigoProducto'),['pr_id' => $this->request->getPost('codigoProducto'),'pr_nombre' => $this->request->getPost('nombreProducto'),
+    'pr_descripcion' => $this->request->getPost('descripcionProducto'),'pr_precio_normal' => $this->request->getPost('precioNormal'),
+    'pr_precio_rebajado' => $this->request->getPost('precioRebajado'), 'pr_imagen' => $this->request->getPost('urlImgProd'),
+    'pr_empresa' => $this->request->getPost('empresa'), 'pr_estado' => 'A'] 
+);
+return redirect()->to(base_url()."productos");
+}
+
+public function deleteProduct($idProducto)
+{
+    $this->productos->update($idProducto,['pr_estado' => 'E'] 
+);
+return redirect()->to(base_url()."productos");
+}
+
+public function reEnterProduct($idProducto)
+{
+    $this->productos->update($idProducto,['pr_estado' => 'A'] 
+);
+return redirect()->to(base_url()."ProductosEliminados");
+}
 
 
 
-// public function seeDeleteCustumer($activo = 'E'){
 
-//     $clientes = $this->clientes->where('cl_estado', $activo)->findAll();
-//     $data = ['titulo'=>'Clientes Eliminados','Clientes'=>$clientes];
-
-//     echo view('header');
-//     echo view('clientes/clientesEliminados',$data);
-//     echo view('footer');
-
-// }
 
 // public function newCustumer(){
 //     $data = ['titulo'=>'Agregar Nuevo Cliente',];
@@ -72,24 +109,7 @@ return redirect()->to(base_url()."productos");
 // return redirect()->to(base_url()."clientes");
 // }
 
-// public function upCustumer(string $idCliente){
-//     $cliente = $this->clientes->where('cl_id', $idCliente)->first();
-//     $data = ['titulo'=>'Editando Cliente', 'datos'=> $cliente];
-    
-//     echo view('header');
-//     echo view('clientes/editarCliente',$data);
-//     echo view('footer');
 
-// }
-
-// public function updateCustumer()
-// {
-//     $this->clientes->update($this->request->getPost('codigoPersona'),['cl_id' => $this->request->getPost('codigoPersona'),'cl_nombres' => $this->request->getPost('nombre'), 'cl_apellidos' => $this->request->getPost('apellidos'),'cl_telefono' => $this->request->getPost('telefono'),
-//     'cl_nit' => $this->request->getPost('nit'), 'cl_correo' => $this->request->getPost('correo'),
-//     'cl_pais' => $this->request->getPost('pais'), 'fk_empresa' => $this->request->getPost('empresa')] 
-// );
-// return redirect()->to(base_url()."clientes");
-// }
 
 // public function deleteCustumer($idCliente)
 // {
@@ -98,12 +118,7 @@ return redirect()->to(base_url()."productos");
 // return redirect()->to(base_url()."clientes");
 // }
 
-// public function reEnterCusumer($idCliente)
-// {
-//     $this->clientes->update($idCliente,['cl_estado' => 'A'] 
-// );
-// return redirect()->to(base_url()."ClientesEliminados");
-// }
+
 
 
 }
