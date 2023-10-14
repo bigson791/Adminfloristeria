@@ -67,7 +67,7 @@
                                 Productos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseProductos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <div class="collapse show" id="collapseProductos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?php echo base_url()?>productos">Ver Productos</a>
                                     <a class="nav-link" href="">Agregar</a>
@@ -81,7 +81,19 @@
                             </a>
                             <div class="collapse" id="collapsePedidos" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo base_url()?>verProductos">Ver Pedidos</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>pedidos">Ver Pedidos</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>nuevoPedido">Agregar</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>fabricarPedido">Fabricar pedido</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConfiguracion" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"  style="padding-right: 15px;"></i></div>
+                                Configuración
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseConfiguracion" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo base_url()?>verProductos">Zona Envio</a>
                                     <a class="nav-link" href="">Agregar</a>
                                 </nav>
                             </div>
@@ -94,6 +106,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Envío
                             </a>
+                            
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

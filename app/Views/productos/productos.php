@@ -30,8 +30,8 @@
                   <td><?php echo $dato['pr_precio_normal']; ?></td>
                   <td><?php echo $dato['pr_precio_rebajado']; ?></td>
                   <td><img src="<?php echo $dato['pr_imagen']; ?>" heigh="150px;" width="150px;"></td>
-                  <td><a href="<?php echo base_url() . 'EditarProducto/' . $dato['pr_id']?>" class="btn btn-warning" title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
-                  <td><a href="<?php echo base_url() . 'eliminarProducto/' . $dato['pr_id'] ?>" class="btn btn-danger" title="Eliminar Cliente"> <i class="fa-solid fa-trash"></i></a></td>
+                  <td><a href="<?php echo base_url() . 'EditarProducto/' . $dato['pr_id'] ?>" class="btn btn-warning" title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
+                  <td><a href="#" data-href="<?php echo base_url() . 'eliminarProducto/' . $dato['pr_id'] ?>" data-toggle="modal" data-target="#modalConfirmacionCliente" rel="tooltip" data-placement="top" class="btn btn-danger btn-EliminarCliente" title="Eliminar Cliente"> <i class="fa-solid fa-trash"></i></a></td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -40,8 +40,41 @@
       </div>
     </div>
   </main>
+  <div class="modal fade" id="modalConfirmacionCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #4e4d4d; color:white;">
+          <div class="text-center">
+            <h5 class="modal-title" id="exampleModalLabel">Eliminar Registro</h5>
+          </div>
+          <a type="button" class="close btnCerrarModal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white"><i class="fa-solid fa-xmark"></i></span>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="text-center">
+            <i class="fa-solid fa-trash" style="font-size: 50px"></i>
+            <P style="font-size: 18px;">¿Estas seguro que quieres eliminar el registro?</P>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="text-center">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <button type="button" class="btn btn-secondary btnCerrarModal" style="float: left" data-dismiss="modal">Cancelar</button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <a type="button" class="btn btn-danger btn-ok" style="float: right">Eliminar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
+    var urlToDelete;
     $(document).ready(function() {
       $('#tablaProductos').DataTable({
         responsive: true,
@@ -105,6 +138,23 @@
             sortDescending: ": activate to sort column descending"
           }
         },
+      });
+
+      $('#tablaProductos').on('click', '.btn-EliminarCliente', function() {
+        urlToDelete = $(this).data('href');
+        $('#modalConfirmacionCliente').modal('show');
+      })
+
+      $('.btnCerrarModal').on('click', function() {
+        $('#modalConfirmacionCliente').modal('hide');
+        console.log("He presionado el boton");
+      })
+
+      $('#modalConfirmacionCliente').on('click', '.btn-ok', function() {
+        // Realiza la acción deseada, en este caso, redirige a la URL almacenada
+        if (urlToDelete) {
+          window.location.href = urlToDelete;
+        }
       });
 
     });

@@ -1,12 +1,14 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <h3 class="mt-4"><?php echo $titulo .'&#8594;'.$datos['pr_nombre']; ?></h3>
+            <h3 class="mt-4"><?php $nombreProducto = isset($datos['pr_nombre']) ? $nombreProducto = $datos['pr_nombre'] : $nombreProducto = 'Producto';  
+             echo $titulo .'&#8594'.$nombreProducto; ?></h3>
             <div class="card mb-4">
                 <div class="row" style="padding-top: 25px; padding-left: 25px; padding-right: 25px;">
                     <div class="card">
                         <div class="text-center">
-                            <img id="imgProducto" src="<?php echo $datos['pr_imagen'];?>" width="250px" height="250px">
+                            <?php $urlProd = isset($datos['pr_imagen']) ? $urlProd = $datos['pr_imagen'] : $urlProd = '';?>
+                            <img id="imgProducto" src="<?php echo $urlProd?>" width="250px" height="250px">
                         </div>
                     </div>
                 </div>

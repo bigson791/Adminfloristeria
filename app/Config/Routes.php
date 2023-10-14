@@ -26,8 +26,11 @@ $routes->post('actualizarProducto', 'Productos::updateProduct');
 $routes->get('eliminarProducto/(:num)','Productos::deleteProduct/$1');
 $routes->get('ProductosEliminados', 'Productos::seeDeleteProduct');
 $routes->get('reingresarProducto/(:num)', 'Productos::reEnterProduct/$1');
-
-
 #/Rutas de productos
+$routes->get('pedidos', 'Pedidos::index');
+$routes->get('nuevoPedido', 'Pedidos::index');
+#Rutas de Pedidos
+
+#/Rutas de pedidos
 
 $routes->get('login', 'Login::index');

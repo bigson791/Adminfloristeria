@@ -28,7 +28,7 @@
                   <td><?php echo $dato['pr_precio_normal']; ?></td>
                   <td><?php echo $dato['pr_precio_rebajado']; ?></td>
                   <td><img src="<?php echo $dato['pr_imagen']; ?>" heigh="150px;" width="150px;"></td>
-                  <td><a href="<?php echo base_url() . 'reingresarProducto/' . $dato['pr_id'] ?>" class="btn btn-primary" title="Regresar Registro"> <i class="fa-solid fa-turn-up"></i></a></td>
+                  <td><a href="#" data-href="<?php echo base_url() . 'reingresarProducto/' . $dato['pr_id'] ?>" class="btn btn-primary btn-reingreso" title="Regresar Registro"> <i class="fa-solid fa-turn-up"></i></a></td>
                 </tr>
               <?php } ?>
             </tbody>
@@ -37,8 +37,42 @@
       </div>
     </div>
   </main>
+  <!-- Modal -->
+  <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #4e4d4d; color:white;">
+          <div class="text-center">
+            <h5 class="modal-title" id="exampleModalLabel">Restablecer Registro</h5>
+          </div>
+          <a id="btnCerrarModal" type="button" class="close btnCerrarModal" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white"><i class="fa-solid fa-xmark"></i></span>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="text-center">
+            <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 50px"></i>
+            <P style="font-size: 18px;">¿Estas seguro que re establecer el registro?</P>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="text-center">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <button type="button" class="btn btn-secondary btnCerrarModal" style="float: left" data-dismiss="modal">Cancelar</button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <a type="button" class="btn btn-danger btn-ok" style="float: right">Restablecer</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
+    var urlToDelete;
     $(document).ready(function() {
       $('#tablaProductos').DataTable({
         responsive: true,
@@ -99,6 +133,23 @@
           }
         },
       });
+      $('#tablaProductos').on('click', '.btn-reingreso', function() {
+        urlToDelete = $(this).data('href');
+        $('#modalConfirmacion').modal('show');
+      })
+
+      $('.btnCerrarModal').on('click', function() {
+        $('#modalConfirmacion').modal('hide');
+        console.log("He presionado el boton");
+      })
+
+      $('#modalConfirmacion').on('click', '.btn-ok', function() {
+        // Realiza la acción deseada, en este caso, redirige a la URL almacenada
+        if (urlToDelete) {
+          window.location.href = urlToDelete;
+        }
+      });
+
 
     });
   </script>
