@@ -49,7 +49,7 @@
         </div>
     </main>
     <!-- Modal -->
-    <div class="modal fade" id="modalConfirmacionCliente" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalConfirmacionCliente" tabindex="-1" aria-hidden="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #4e4d4d; color:white;">
@@ -118,12 +118,12 @@
             $('#tablaClientes').on('click', '.btn-EliminarCliente', function() {
                 urlToDelete = $(this).data('href');
                 $('#modalConfirmacionCliente').modal('show');
-            })
+            });
 
             $('.btnCerrarModal').on('click', function() {
                 $('#modalConfirmacionCliente').modal('hide');
                 console.log("He presionado el boton");
-            })
+            });
 
             $('#modalConfirmacionCliente').on('click', '.btn-ok', function() {
                 // Realiza la acción deseada, en este caso, redirige a la URL almacenada

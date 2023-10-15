@@ -70,7 +70,7 @@
                             <div class="collapse show" id="collapseProductos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?php echo base_url()?>productos">Ver Productos</a>
-                                    <a class="nav-link" href="">Agregar</a>
+                                    <a class="nav-link" href="NuevoProducto">Agregar</a>
                                 </nav>
                             </div>
 

@@ -66,9 +66,9 @@
 
     <script>
         $(document).ready(function() {
-            var nombres = $('#nombre');
-            var apellidos = $('#apellidos');
-            var correo = $('#correo');
+                var nombres = $('#nombre');
+                var apellidos = $('#apellidos');
+                var correo = $('#correo');
             convertirEmailAMayusculas(correo);
             procesarInput(nombres);
             procesarInput(apellidos);

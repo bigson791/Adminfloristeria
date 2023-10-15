@@ -27,8 +27,8 @@
                   <td><?php echo $dato['pr_cod_pagina']; ?></td>
                   <td><?php echo $dato['pr_nombre']; ?></td>
                   <td><?php echo $dato['pr_descripcion']; ?></td>
-                  <td><?php echo $dato['pr_precio_normal']; ?></td>
-                  <td><?php echo $dato['pr_precio_rebajado']; ?></td>
+                  <td><?php echo number_format($dato['pr_precio_normal'],2,'.',''); ?></td>
+                  <td><?php echo number_format($dato['pr_precio_rebajado'],2,'.',''); ?></td>
                   <td><img src="<?php echo $dato['pr_imagen']; ?>" heigh="150px;" width="150px;"></td>
                   <td><a href="<?php echo base_url() . 'EditarProducto/' . $dato['pr_id'] ?>" class="btn btn-warning" title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
                   <td><a href="#" data-href="<?php echo base_url() . 'eliminarProducto/' . $dato['pr_id'] ?>" data-toggle="modal" data-target="#modalConfirmacionCliente" rel="tooltip" data-placement="top" class="btn btn-danger btn-EliminarCliente" title="Eliminar Cliente"> <i class="fa-solid fa-trash"></i></a></td>

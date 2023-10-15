@@ -5272,8 +5272,8 @@ textarea.form-control-lg {
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: 1px;
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   z-index: var(--bs-modal-zindex);
   display: none;
   width: 100%;
@@ -5281,8 +5281,6 @@ textarea.form-control-lg {
   overflow-x: hidden;
   overflow-y: auto;
   outline: 0;
-  transform: translate(-50%, -50%);
-  max-width: 80%;
 }
 
 .modal-dialog {

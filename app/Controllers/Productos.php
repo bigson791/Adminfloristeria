@@ -77,10 +77,7 @@ class Productos extends BaseController
 
     public function insertProduct()
     {
-        if ($this->request->getMethod() == 'post' && $this->validate([
-            'nombreProducto' => 'required',
-            'descripcionProducto' => 'required', 'precioNormal' => 'required', 'urlImgProd' => 'required'
-        ])) {
+        if ($this->request->getMethod() == 'post' && $this->validate($this->reglas)) {
             $this->productos->save(
                 [
                     'pr_nombre' => $this->request->getPost('nombreProducto'), 'pr_descripcion' => $this->request->getPost('descripcionProducto'),
@@ -91,13 +88,24 @@ class Productos extends BaseController
             );
             return redirect()->to(base_url() . "productos");
         } else {
+
+            $data = ['titulo' => 'Agregar Nuevo Producto','validation' => $this->validator];
+
+            echo view('header');
+            echo view('productos/NuevoProducto', $data);
+            echo view('footer');
         }
     }
 
-    public function upProduct(string $idProducto)
+    public function upProduct(string $idProducto, $valid = null)
     {
         $producto = $this->productos->where('pr_id', $idProducto)->first();
-        $data = ['titulo' => 'Editando Producto', 'datos' => $producto];
+        if($valid!=null){
+            $data = ['titulo' => 'Editando Producto', 'datos' => $producto,'validation'=>$valid];
+        }else{
+            $data = ['titulo' => 'Editando Producto', 'datos' => $producto];
+        }
+        
 
         echo view('header');
         echo view('productos/editarProducto', $data);
@@ -107,10 +115,7 @@ class Productos extends BaseController
 
     public function updateProduct()
     {
-        if ($this->request->getMethod() == 'post' && $this->validate([
-            'nombreProducto' => 'required',
-            'descripcionProducto' => 'required', 'precioNormal' => 'required', 'urlImgProd' => 'required'
-        ])) {
+        if ($this->request->getMethod() == "post" && $this->validate($this->reglas)) {
             $this->productos->update(
                 $this->request->getPost('codigoProducto'),
                 [
@@ -122,11 +127,7 @@ class Productos extends BaseController
             );
             return redirect()->to(base_url() . "productos");
         } else {
-            $data = ['titulo' => 'Editando Producto', 'validation' => $this->validator];
-
-            echo view('header');
-            echo view('productos/editarProducto', $data);
-            echo view('footer');
+            return $this->upProduct($this->request->getPost('codigoProducto'), $this->validator);
         }
     }
 
