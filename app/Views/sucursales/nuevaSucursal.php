@@ -8,7 +8,7 @@
                 </div>
             <?php } ?>
             <div class="card mb-4">
-                <form method="post" action="<?php echo base_url(); ?>insertarCliente" autocomplete="off">
+                <form method="post" action="<?php echo base_url(); ?>insertarSucursal" autocomplete="off">
                     <?php csrf_field(); ?>
                     <div class="form-group">
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
@@ -17,45 +17,29 @@
                                 <input class="form-control" id="nombre" name="nombre" type="text" autofocus required value="<?php echo set_value('nombre'); ?>">
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label>Apellidos:</label>
-                                <input class="form-control" id="apellidos" name="apellidos" type="text" required value="<?php echo set_value('apellidos'); ?>">
+                                <label>Dirección:</label>
+                                <input class="form-control" id="Direccion" name="Direccion" type="text" value="<?php echo set_value('Direccion'); ?>">
                             </div>
                         </div>
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
                             <div class="col-12 col-sm-6">
                                 <label>Telefono:</label>
-                                <input class="form-control" id="telefono" name="telefono" type="tel" required value="<?php echo set_value('telefono'); ?>">
+                                <input class="form-control" id="telefono" name="telefono" type="tel" value="<?php echo set_value('telefono'); ?>">
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label>NIT:</label>
-                                <input class="form-control" id="nit" name="nit" type="text" value="<?php echo set_value('nit'); ?>">
-                            </div>
-                        </div>
-                        <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-sm-6">
-                                <label>Correo:</label>
-                                <input class="form-control" id="correo" name="correo" type="email" value="<?php echo set_value('correo'); ?>">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <label>Pais:</label>
-                                <select class="form-control form-select" id="pais" name="pais" required>
+                                <label>Empresa:</label>
+                                <select class="form-control form-select" id="empresa" name="empresa" required>
                                     <option value="">Selecciona una opción</option>
-                                    <?php foreach ($Paises as $pais) { ?>
-                                        <option value="<?php echo $pais['ps_cod']; ?>" <?php if ($pais['ps_cod'] == 'GT') {
+                                    <?php foreach ($empresas as $empresa) { ?>
+                                        <option value="<?php echo $empresa['emp_id']; ?>" <?php if ($empresa['emp_id'] == '1') {
                                                                                             echo 'selected';
-                                                                                        } ?>><?php echo $pais['ps_nombre'] ?></option>
+                                                                                        } ?>><?php echo $empresa['emp_nombre'] ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-sm-6">
-                                <label>Empresa:</label>
-                                <input class="form-control" id="empresa" name="empresa" type="text" required value="1" readonly>
-                            </div>
-                        </div>
-                        <div class="text-center" style="padding-top: 20px;">
-                            <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>clientes"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
+                        <div class="text-center" style="padding-top: 20px;padding-bottom: 20px;">
+                            <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>sucursales"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
                             <button type="submit" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
                         </div>
                     </div>
@@ -66,12 +50,10 @@
 
     <script>
         $(document).ready(function() {
-                var nombres = $('#nombre');
-                var apellidos = $('#apellidos');
-                var correo = $('#correo');
-            convertirEmailAMayusculas(correo);
-            procesarInput(nombres);
-            procesarInput(apellidos);
+            var nombres = $('#nombre');
+            var direccion = $('#Direccion');            
+            procesarCadena(nombres);
+            procesarCadena(direccion);
         });
         $('#telefono').on('keypress', function(e) {
             // Obtener el código de la tecla presionada
@@ -83,6 +65,26 @@
                 e.preventDefault();
             }
         });
+
+        function procesarCadena(input) {
+            input.on('input', function() {
+                var texto = input.val();
+                var textoLimpio = '';
+
+                // Recorrer cada carácter en el texto de entrada
+                for (var i = 0; i < texto.length; i++) {
+                    var caracter = texto[i];
+
+                    // Verificar si el carácter es una letra (no es un número) o un espacio en blanco
+                    if (caracter.match(/[a-zA-Z\s0-9-,.]/)) {
+                        textoLimpio += caracter.toUpperCase();
+                    }
+                }
+
+                // Establecer el valor del campo de entrada como el texto modificado
+                input.val(textoLimpio);
+            });
+        }
 
         function procesarInput(input) {
             input.on('input', function() {
@@ -101,14 +103,6 @@
 
                 // Establecer el valor del campo de entrada como el texto modificado
                 input.val(textoLimpio);
-            });
-        }
-
-        function convertirEmailAMayusculas(input) {
-            input.on('input', function() {
-                var valor = input.val();
-                var valorMayusculas = valor.toUpperCase();
-                input.val(valorMayusculas);
             });
         }
     </script>

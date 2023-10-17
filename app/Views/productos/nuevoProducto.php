@@ -172,7 +172,7 @@
           var caracter = texto[i];
 
           // Verificar si el carácter es una letra (no es un número) o un espacio en blanco
-          if (caracter.match(/[a-zA-Z\s0-9]/)) {
+          if (caracter.match(/[a-zA-Z\s0-9,]/)) {
             textoLimpio += caracter.toUpperCase();
           }
         }

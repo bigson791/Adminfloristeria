@@ -88,13 +88,17 @@
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConfiguracion" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"  style="padding-right: 15px;"></i></div>
-                                Configuración
+                                Administración
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseConfiguracion" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo base_url()?>verProductos">Zona Envio</a>
-                                    <a class="nav-link" href="">Agregar</a>
+                            <nav class="sb-sidenav-menu-nested nav">                            
+                                    <a class="nav-link" href="<?php echo base_url()?>zonaEnvio">Zona Envio</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>empresas">Empresas</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>sucursales">Sucursales</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>usuarios">Usuarios</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>roles">Roles</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>cajas">Cajas</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Reportes</div>
