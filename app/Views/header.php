@@ -1,3 +1,9 @@
+<?php 
+    $session_user = session();
+    if($session_user!=null) {
+
+    }
+?>
 <!DOCTYPE html>
 <html lang="Es">
     <head>
@@ -30,12 +36,12 @@
             <!-- Navbar-->
             <ul class="navbar-nav d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" >
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i> <?php echo $session_user->nombre; ?></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="<?php echo base_url()?>CambiarContrasena">Cambiar Contraseña</a></li>
                         <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item list-group-item-danger" href="<?php echo base_url()?>logout">Salir</a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,69 +1,82 @@
 <!DOCTYPE html>
 <html lang="ES">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Login - SB Admin</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    </head >
-    <body style="background-color: #f9f9f9">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container" style="padding-top: 125px;">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5" >
-                                    <div class="card-header bg-dark"><h3 class="text-center font-weight-light my-4" style="color: white;">Floristeria Admin</h3></div>
-                                    <div class="card-body">
-                                        <form style="padding-top: 45px; padding-left: 25px;padding-right: 25px">
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                                <label for="inputEmail">Usuario</label>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Login - Floristeria Admin</title>
+    <link href="<?php echo base_url() ?>css/styles.css" rel="stylesheet"><!-- Hoja de estilos tema-->
+    <link href="<?php echo base_url() ?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>css/style.min.css" rel="stylesheet">
+    <script src="<?php echo base_url() ?>js/all.js"></script>
+    <script src="<?php echo base_url() ?>js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body style="background-color: #f9f9f9">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container" style="padding-top: 125px;">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header bg-dark">
+                                    <h3 class="text-center font-weight-light my-4" style="color: white;">Floristeria Admin</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form style="padding-top: 45px; padding-left: 25px;padding-right: 25px; padding-bottom: 45px;" method="post" action="<?php base_url(); ?>iniciarSesion">
+                                        <?php if (isset($validation)) { ?>
+                                            <div class="alert alert-danger">
+                                                <?php echo $validation->listErrors(); ?>
                                             </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
-                                                <label for="inputPassword">Contraseña</label>
+                                        <?php } ?>
+                                        <?php if (isset($error)) { ?>
+                                            <div class="alert alert-danger">
+                                                <?php echo $error; ?>
                                             </div>
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                                <label class="form-check-label" for="inputRememberPassword">Recordar Contraseña</label>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Olvide mi contraseña?</a>
-                                                <a class="btn btn-dark btn-lg" href="index.html">Ingresar</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center py-3">
-                                        <p>Floristeria Admin <?php echo date("Y")?></p>
-                                    </div>
+                                        <?php } ?>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="usuario" name="usuario" type="text" placeholder="Ingresa tu usuario" />
+                                            <label for="inputEmail">Usuario</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="passwrd" name="passwrd" type="password" placeholder="Ingresa tu contraseña" />
+                                            <label for="inputPassword">Contraseña</label>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-dark btn-xl" value="Ingresar">Ingresar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <p>Floristeria Admin <?php echo date("Y") ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </main>
-            </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; A Y F Design <?php echo date("Y") ?></div>
+                        <div>
+                            <a href="mailto:soporte@ayfserviciostecnologicos.com">Soporte</a>
+                            &middot;
+                            <a href="https://ayfserviciostecnologicos.com/" target="_blank">Quiero un sistema como este</a>
                         </div>
                     </div>
-                </footer>
-            </div>
+                </div>
+            </footer>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+    </div>
+    <script src="<?php echo base_url() ?>js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url() ?>js/scripts.js"></script>
+</body>
+
 </html>

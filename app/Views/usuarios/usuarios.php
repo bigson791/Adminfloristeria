@@ -8,7 +8,7 @@
                                 echo $titulo ?></h3>
             <div>
                 <p>
-                    <a href="<?php echo base_url() ?>NuevoCliente" class="btn btn-info" style="color: white;"> <i class="fa-solid fa-user-plus"></i> Agregar Usuario</a>
+                    <a href="<?php echo base_url() ?>NuevoUsuario" class="btn btn-info" style="color: white;"> <i class="fa-solid fa-user-plus"></i> Agregar Usuario</a>
                     <a href="<?php echo base_url() ?>ClientesEliminados" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
                 </p>
             </div>
@@ -18,10 +18,10 @@
                         <thead>
                             <th>Nombres</th>
                             <th>Apellidos</th>
-                            <th>Nit</th>
-                            <th>Telefono</th>
-                            <th>Última Compra</th>
-                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Caja</th>
+                            <th>Empresa</th>
+                            <th>Usuario</th>                            
                             <th></th>
                             <th></th>
                         </thead>
@@ -34,8 +34,8 @@
                                     <td><?php echo $dato['us_id_caja'];?></td>
                                     <td><?php echo $dato['us_empresa']; ?></td>
                                     <td><?php echo $dato['us_usuario']; ?></td>
-                                    <td><a href="<?php echo base_url() . 'EditarCliente/' . $dato['cl_id'] ?>" class="btn btn-warning " title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
-                                    <td><a id="eliminarCliente" href="#" data-href="<?php echo base_url() . 'eliminarCliente/' . $dato['cl_id'] ?>" class="btn btn-danger btn-EliminarCliente" title="Eliminar Cliente"><i class="fa-solid fa-trash"></i></a></td>
+                                    <td><a href="<?php echo base_url() . 'EditarUsuario/' . $dato['us_id'] ?>" class="btn btn-warning " title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
+                                    <td><a id="eliminarCliente" href="#" data-href="<?php echo base_url() . 'eliminarUsuario/' . $dato['us_id'] ?>" class="btn btn-danger btn-EliminarCliente" title="Eliminar Cliente"><i class="fa-solid fa-trash"></i></a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>

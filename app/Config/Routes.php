@@ -5,7 +5,14 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->setDefaultNamespace('App\controllers');
+$routes->setDefaultController('Login');
+$routes->setDefaultMethod('index');
+$routes->get('/', 'Productos::index');
+$routes->post('iniciarSesion', 'login::validar');
+$routes->get('logout', 'login::logout');
+$routes->get('CambiarContrasena', 'usuarios::chPassword');
+
 #Rutas de clientes
 $routes->get('clientes', 'Clientes::index');
 $routes->get('NuevoCliente', 'Clientes::newCustumer');
@@ -64,9 +71,9 @@ $routes->get('reingresarSucursal/(:num)', 'Sucursales::reEnterBranch/$1');
 
 #Rutas de Usuarios
 $routes->get('usuarios', 'Usuarios::index');
-$routes->get('NuevoUsuarios', 'Usuarios::newUser');
+$routes->get('NuevoUsuario', 'Usuarios::newUser');
 $routes->post('insertarUsuarios', 'Usuarios::insertUser');
-$routes->get('EditarUsuarios/(:num)', 'Usuarios::upUser/$1');
+$routes->get('EditarUsuario/(:num)', 'Usuarios::upUser/$1');
 $routes->post('actualizarUsuarios', 'Usuarios::updateUser');
 $routes->get('eliminarUsuarios/(:num)', 'Usuarios::deleteUser/$1');
 $routes->get('UsuariosEliminados', 'Usuarios::seeDeleteUser');

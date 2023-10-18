@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\CajasModel;
 use App\Models\EmpresasModelo;
+use App\Models\RolesModel;
 use App\Models\SucursalesModelo;
 use App\Models\UsuariosModel;
 
@@ -13,16 +15,58 @@ class Usuarios extends BaseController
     protected $empresas;
     protected $usuarios;
     protected $reglas;
+    protected $roles;
+    protected $cajas;
 
     public function __construct()
     {
         $this->sucursales = new SucursalesModelo();
         $this->empresas = new EmpresasModelo();
         $this->usuarios = new UsuariosModel();
+        $this->roles = new RolesModel();
+        $this->cajas = new CajasModel();
 
         helper(['form']);
         $this->reglas = [
-            'nombre' => [
+            'usuario' => [
+                'rules' => 'required|is_unique[fl_usuarios.us_usuario]',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.',
+                    'is_unique' => 'El nombre de usuario {field} ya existe, ingresa uno diferente'
+                ],
+            ],
+            'passwrd' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'repasswrd' => [
+                'rules' => 'required|matches[passwrd]',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.',
+                    'matches' => 'Las contraseñas no coinciden'
+                ],
+            ],
+            'nombres' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'apellidos' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'rol' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'caja' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
@@ -48,94 +92,136 @@ class Usuarios extends BaseController
         echo view('footer');
     }
 
-    public function seeDeleteBranch($activo = 'E')
+    public function seeDeleteUser($activo = 'E')
     {
 
         $usuarios = $this->sucursales->where('suc_estado', $activo)->findAll();
         $data = ['titulo' => 'sucursales Eliminadas', 'sucursales' => $usuarios];
 
         echo view('header');
-        echo view('sucursales/sucursalesEliminadas', $data);
+        echo view('usuarios/UsuariosEliminados', $data);
         echo view('footer');
     }
 
-    public function newBranch()
+    public function newUser()
     {
+        $Roles = $this->roles->where('rl_estado', 'A')->findAll();
+        $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
         $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
-        $data = ['titulo' => 'Agregar Nueva Sucursal', 'empresas' => $empresas];
+        $data = ['titulo' => 'Agregar Nuevo Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas];
 
         echo view('header');
-        echo view('sucursales/nuevaSucursal', $data);
+        echo view('usuarios/nuevoUsuario', $data);
         echo view('footer');
     }
 
-    public function insertBranch()
+    public function insertUser()
     {
         if ($this->request->getMethod() == "post" && $this->validate($this->reglas)) {
-            $this->sucursales->save(
+            $hash = password_hash($this->request->getPost('passwrd'), PASSWORD_DEFAULT);
+            $this->usuarios->save(
                 [
-                    'suc_nombre' => $this->request->getPost('nombre'), 'suc_direccion' => $this->request->getPost('Direccion'), 'suc_telefono' => $this->request->getPost('telefono'),
-                    'suc_empresa' => intval($this->request->getPost('empresa')), 'suc_estado' => 'A'
+                    'us_nombres' => $this->request->getPost('nombres'),
+                    'us_apellidos' => $this->request->getPost('apellidos'),
+                    'us_rol' => $this->request->getPost('rol'),
+                    'us_id_caja' => $this->request->getPost('caja'),
+                    'us_empresa' => intval($this->request->getPost('empresa')),
+                    'us_usuario' => $this->request->getPost('usuario'),
+                    'us_passwrd' => $hash,
+                    'us_estado' => 'A'
                 ]
-
             );
-            return redirect()->to(base_url() . "sucursales");
+            return redirect()->to(base_url() . "usuarios");
         } else {
+            $Roles = $this->roles->where('rl_estado', 'A')->findAll();
+            $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
             $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
-            $data = ['titulo' => 'Agregar Nueva Empresa', 'validation' => $this->validator, 'empresas' => $empresas];
+            $data = [
+                'titulo' => 'Agregar Nueva Empresa',
+                'validation' => $this->validator,
+                'empresas' => $empresas,
+                'Roles' => $Roles,
+                'Cajas' => $Cajas
+            ];
             echo view('header');
-            echo view('sucursales/nuevaSucursal', $data);
+            echo view('usuarios/nuevoUsuario', $data);
             echo view('footer');
         }
     }
 
-    public function upBranch($idSucursal, $valid = null)
+    public function upUser($idUser, $valid = null)
     {
         $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
-        $sucursal = $this->sucursales->where('suc_id', $idSucursal)->first();
+        $Roles = $this->roles->where('rl_estado', 'A')->findAll();
+        $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
+        $usuario = $this->usuarios->where('us_id', $idUser)->first();
         if ($valid != null) {
-            $data = ['titulo' => 'Editando Sucursal', 'empresas' => $empresas, 'datos' => $sucursal, 'validation' => $valid];
+            $data = ['titulo' => 'Editando Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Usuarios' => $usuario, 'validation' => $valid];
         } else {
-            $data = ['titulo' => 'Editando Cliente', 'empresas' => $empresas, 'datos' => $sucursal,];
+            $data = ['titulo' => 'Editando Usuario', 'Usuarios' => $usuario, 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas];
         }
-
-
         echo view('header');
-        echo view('sucursales/editarSucursal', $data);
+        echo view('usuarios/editarUsuario', $data);
         echo view('footer');
     }
 
-    public function updateBranch()
+    public function updateUser()
     {
         if ($this->request->getMethod() == "post" && $this->validate($this->reglas)) {
-            $this->sucursales->update(
-                $this->request->getPost('codigoSucursal'),
+            $hash = password_hash($this->request->getPost('passwrd'), PASSWORD_DEFAULT);
+            $this->usuarios->update(
+                $this->request->getPost('codigoUsuario'),
                 [
-                    'suc_nombre' => $this->request->getPost('nombre'), 'suc_direccion' => $this->request->getPost('Direccion'), 'suc_telefono' => $this->request->getPost('telefono'),
-                    'suc_empresa' => intval($this->request->getPost('empresa')), 'suc_estado' => 'A'
+                    'us_nombres' => $this->request->getPost('nombres'),
+                    'us_apellidos' => $this->request->getPost('apellidos'),
+                    'us_rol' => $this->request->getPost('rol'),
+                    'us_id_caja' => $this->request->getPost('caja'),
+                    'us_empresa' => intval($this->request->getPost('empresa')),
+                    'us_passwrd' => $hash,
+                    'us_estado' => 'A'
                 ]
             );
-            return redirect()->to(base_url() . "sucursales");
+            return redirect()->to(base_url() . "usuarios");
         } else {
-            return $this->upBranch($this->request->getPost('codigoSucursal'), $this->validator);
+            return $this->upUser($this->request->getPost('codigoUsuario'), $this->validator);
         }
     }
 
-    public function deleteBranch($idBranch)
+    public function deleteUser($idUser)
     {
-        $this->sucursales->update(
-            $idBranch,
-            ['suc_estado' => 'E']
+        $this->usuarios->update(
+            $idUser,
+            ['us_estado' => 'E']
         );
-        return redirect()->to(base_url() . "sucursales");
+        return redirect()->to(base_url() . "usuarios");
     }
 
-    public function reEnterBranch($idBranch)
+    public function reEnterUser($idUser)
     {
-        $this->sucursales->update(
-            $idBranch,
-            ['suc_estado' => 'A']
+        $this->usuarios->update(
+            $idUser,
+            ['us_estado' => 'A']
         );
-        return redirect()->to(base_url() . "SucursalesEliminadas");
+        return redirect()->to(base_url() . "usuariosEliminadas");
+    }
+
+    public function chPassword(){
+        $session = session();
+        $usuarios = $this->usuarios->where('us_usuario', $session->id_usuario)->first();
+
+        $data = ['titulo' => 'Actualizar Contraseña', 'usuarios' => $usuarios];
+
+        echo view('header');
+        echo view('usuarios/cambiarContrasena', $data);
+        echo view('footer');
+    }
+
+    public function changePassword($idUser){
+        $hash = password_hash($this->request->getPost('passwrd'), PASSWORD_DEFAULT);
+        $this->usuarios->update(
+            $idUser,
+            ['us_passwrd' => $hash]
+        );
+        return redirect()->to(base_url() . "usuariosEliminadas");
     }
 }
