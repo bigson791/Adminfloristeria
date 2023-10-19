@@ -8,27 +8,21 @@
                                 echo $titulo ?></h3>
             <div>
                 <p>
-                <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>sucursalesEliminadas"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
+                    <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>Roles"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
                 </p>
             </div>
             <div class="card mb-4">
                 <div class="table table-responsive"="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
                     <table class="table-sm display dataTable dtr-inline collapsed" id="tablaClientes" style="width: 100%;">
                         <thead>
-                            <th>Nombre</th>
-                            <th>Dirección</th>
-                            <th>Telefono</th>
-                            <th>Empresa</th>
+                            <th>Rol</th>
                             <th></th>
                         </thead>
                         <tbody>
-                            <?php foreach ($sucursales as $dato) { ?>
+                            <?php foreach ($Roles as $dato) { ?>
                                 <tr>
-                                    <td><?php echo $dato['suc_nombre']; ?></td>
-                                    <td><?php echo $dato['suc_direccion']; ?></td>
-                                    <td><?php echo $dato['suc_telefono']; ?></td>
-                                    <td><?php echo $dato['suc_empresa']; ?></td>
-                                    <td><a href="#" data-href="<?php echo base_url() . 'reingresarSucursal/' . $dato['suc_id'] ?>" class="btn btn-primary btn-Eliminar" title="Reingresar registro"> <i class="fa-solid fa-turn-up"></i></a></td>
+                                    <td><?php echo $dato['rl_nombre']; ?></td>
+                                    <td><a href="#" data-href="<?php echo base_url() . 'reingresarRol/' . $dato['rl_id'] ?>" class="btn btn-primary btn-Eliminar" title="Reingresar registro"> <i class="fa-solid fa-turn-up"></i></a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>

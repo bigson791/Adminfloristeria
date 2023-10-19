@@ -18,8 +18,8 @@ class RolesModel extends Model
     // Dates
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
-    protected $createdField  = 'rl_fe_alta';
-    protected $updatedField  = 'rl_fe_edit';
+    protected $createdField  = 'rl_fecha_alta';
+    protected $updatedField  = 'rl_fecha_edit';
     protected $deletedField  = 'deleted_at';
 
     // Validation

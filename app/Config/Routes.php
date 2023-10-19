@@ -11,7 +11,7 @@ $routes->setDefaultMethod('index');
 $routes->get('/', 'Productos::index');
 $routes->post('iniciarSesion', 'login::validar');
 $routes->get('logout', 'login::logout');
-$routes->get('CambiarContrasena', 'usuarios::chPassword');
+
 
 #Rutas de clientes
 $routes->get('clientes', 'Clientes::index');
@@ -61,12 +61,29 @@ $routes->post('actualizarSucursal', 'Sucursales::updateBranch');
 $routes->get('eliminarSucursal/(:num)', 'Sucursales::deleteBranch/$1');
 $routes->get('SucursalesEliminadas', 'Sucursales::seeDeleteBranch');
 $routes->get('reingresarSucursal/(:num)', 'Sucursales::reEnterBranch/$1');
+$routes->get('CambiarContrasena', 'usuarios::chPassword');
 #/Rutas de Sucursales
 
 #Rutas de Cajas
+$routes->get('Cajas', 'Cajas::index');
+$routes->get('NuevaCaja', 'Cajas::newBox');
+$routes->post('insertarCaja', 'Cajas::insertBox');
+$routes->get('EditarCaja/(:num)', 'Cajas::upBox/$1');
+$routes->post('actualizarCaja', 'Cajas::updateBox');
+$routes->get('eliminarCaja/(:num)', 'Cajas::deleteBox/$1');
+$routes->get('CajasEliminadas', 'Cajas::seeDeleteBox');
+$routes->get('reingresarCaja/(:num)', 'Cajas::reEnterBox/$1');
 #/Rutas de Cajas
 
 #Rutas de Roles
+$routes->get('Roles', 'Roles::index');
+$routes->get('NuevoRol', 'Roles::newRole');
+$routes->post('insertarRol', 'Roles::insertRole');
+$routes->get('EditarRol/(:num)', 'Roles::upRole/$1');
+$routes->post('actualizarRol', 'Roles::updateRole');
+$routes->get('eliminarRol/(:num)', 'Roles::deleteRole/$1');
+$routes->get('RolesEliminados', 'Roles::seeDeleteRole');
+$routes->get('reingresarRol/(:num)', 'Roles::reEnterRole/$1');
 #/Rutas de Roles
 
 #Rutas de Usuarios
@@ -78,6 +95,8 @@ $routes->post('actualizarUsuarios', 'Usuarios::updateUser');
 $routes->get('eliminarUsuarios/(:num)', 'Usuarios::deleteUser/$1');
 $routes->get('UsuariosEliminados', 'Usuarios::seeDeleteUser');
 $routes->get('reingresarUsuarios/(:num)', 'Usuarios::reEnterUser/$1');
+$routes->post('actualizarContrasena', 'usuarios::changePassword');
+
 #/Rutas de Usuarios
 
 $routes->get('login', 'Login::index');

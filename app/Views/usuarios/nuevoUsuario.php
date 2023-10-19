@@ -8,7 +8,7 @@
                 </div>
             <?php } ?>
             <div class="card mb-4">
-                <form method="post" action="<?php echo base_url(); ?>actualizarUsuarios" autocomplete="off">
+                <form method="post" action="<?php echo base_url(); ?>insertarUsuarios" autocomplete="off">
                     <?php csrf_field(); ?>
                     <div class="form-group">
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">

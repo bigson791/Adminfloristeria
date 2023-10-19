@@ -81,7 +81,7 @@
                             </div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePedidos" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-store"  style="padding-right: 15px;"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cash-register" style="padding-right: 15px;"></i></div>
                                 Pedidos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
@@ -103,8 +103,8 @@
                                     <a class="nav-link" href="<?php echo base_url()?>empresas">Empresas</a>
                                     <a class="nav-link" href="<?php echo base_url()?>sucursales">Sucursales</a>
                                     <a class="nav-link" href="<?php echo base_url()?>usuarios">Usuarios</a>
-                                    <a class="nav-link" href="<?php echo base_url()?>roles">Roles</a>
-                                    <a class="nav-link" href="<?php echo base_url()?>cajas">Cajas</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>Roles">Roles</a>
+                                    <a class="nav-link" href="<?php echo base_url()?>Cajas">Cajas</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Reportes</div>

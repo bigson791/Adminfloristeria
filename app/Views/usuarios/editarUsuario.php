@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="text-center" style="padding-top: 20px; padding-bottom: 20px">
-                            <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>clientes"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
+                            <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>usuarios"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
                             <button type="submit" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
                         </div>
                     </div>

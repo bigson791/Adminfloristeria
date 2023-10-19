@@ -7,25 +7,24 @@
                     <?php echo $validation->listErrors(); ?>
                 </div>
             <?php } ?>
+            <?php if (isset($mensaje)) { ?>
+                <div class="alert alert-success">
+                    <?php echo $mensaje; ?>
+                </div>
+            <?php } ?>
             <div class="card mb-4">
-                <form method="post" action="<?php echo base_url(); ?>actualizarUsuarios" autocomplete="off">
+                <form method="post" action="<?php echo base_url(); ?>actualizarContrasena" autocomplete="off">
                     <?php csrf_field(); ?>
                     <div class="form-group">
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-sm-6">
-                                <label>Nombres:</label>
-                                <input class="form-control" id="nombres" name="nombres" type="text" autofocus required value="<?php echo set_value('nombres'); ?>">
+                            <div class="col-12 col-sm-12">
+                                <label>Usuario:</label>
+                                <input type="text" id="usuario" name="usuario" class="form-control" required value="<?php echo $usuarios['us_usuario']; ?>" disabled>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <label>Apellidos:</label>
-                                <input class="form-control" id="apellidos" name="apellidos" type="text" required value="<?php echo set_value('apellidos'); ?>">
-                            </div>
-                        </div>
-                        <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
                             <div class="col-12 col-sm-6">
                                 <label>Contraseña:</label>
                                 <div class="input-group">
-                                    <input type="password" id="passwrd" name="passwrd"class="form-control" required value="<?php echo set_value('passwrd'); ?>" >
+                                    <input type="password" id="passwrd" name="passwrd" class="form-control" required value="<?php echo set_value('passwrd'); ?>">
                                     <button type="button" class="btn btn-outline-secondary" id="mostrarPassword"><i class="fa-regular fa-eye"></i></button>
                                 </div>
                             </div>

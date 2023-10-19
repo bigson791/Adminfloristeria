@@ -8,27 +8,28 @@
                                 echo $titulo ?></h3>
             <div>
                 <p>
-                <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>sucursalesEliminadas"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
+                    <a href="<?php echo base_url() ?>NuevaCaja" class="btn btn-info" style="color: white;"> <i class="fa-solid fa-plus"></i> Agregar Caja</a>
+                    <a href="<?php echo base_url() ?>CajasEliminadas" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
                 </p>
             </div>
             <div class="card mb-4">
                 <div class="table table-responsive"="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
                     <table class="table-sm display dataTable dtr-inline collapsed" id="tablaClientes" style="width: 100%;">
                         <thead>
+                            <th>Número Caja</th>
                             <th>Nombre</th>
-                            <th>Dirección</th>
-                            <th>Telefono</th>
-                            <th>Empresa</th>
+                            <th>Folio</th>
+                            <th></th>
                             <th></th>
                         </thead>
                         <tbody>
-                            <?php foreach ($sucursales as $dato) { ?>
+                            <?php foreach ($Cajas as $dato) { ?>
                                 <tr>
-                                    <td><?php echo $dato['suc_nombre']; ?></td>
-                                    <td><?php echo $dato['suc_direccion']; ?></td>
-                                    <td><?php echo $dato['suc_telefono']; ?></td>
-                                    <td><?php echo $dato['suc_empresa']; ?></td>
-                                    <td><a href="#" data-href="<?php echo base_url() . 'reingresarSucursal/' . $dato['suc_id'] ?>" class="btn btn-primary btn-Eliminar" title="Reingresar registro"> <i class="fa-solid fa-turn-up"></i></a></td>
+                                    <td><?php echo $dato['cj_num_caja']; ?></td>
+                                    <td><?php echo $dato['cj_nombre']; ?></td>
+                                    <td><?php echo $dato['cj_folio']; ?></td>
+                                    <td><a href="<?php echo base_url() . 'EditarCaja/' . $dato['cj_id'] ?>" class="btn btn-warning " title="Editar"> <i class="fa-solid fa-pen"></i></a></td>
+                                    <td><a id="eliminarCliente" href="#" data-href="<?php echo base_url() . 'eliminarCaja/' . $dato['cj_id'] ?>" class="btn btn-danger btn-EliminarCliente" title="Eliminar"><i class="fa-solid fa-trash"></i></a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -51,8 +52,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 50px"></i>
-                        <P style="font-size: 18px;">¿Estas seguro que re establecer el registro?</P>
+                        <i class="fa-solid fa-trash" style="font-size: 50px"></i>
+                        <P style="font-size: 18px;">¿Estas seguro que quieres eliminar el registro?</P>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -62,7 +63,7 @@
                                 <button type="button" class="btn btn-secondary btnCerrarModal" style="float: left" data-dismiss="modal">Cancelar</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                <a type="button" class="btn btn-danger btn-ok" style="float: right">Restablecer</a>
+                                <a type="button" class="btn btn-danger btn-ok" style="float: right">Eliminar</a>
                             </div>
                         </div>
                     </div>
@@ -104,7 +105,7 @@
                     }
                 },
             });
-            $('#tablaClientes').on('click', '.btn-Eliminar', function() {
+            $('#tablaClientes').on('click', '.btn-EliminarCliente', function() {
                 urlToDelete = $(this).data('href');
                 $('#modalConfirmacionCliente').modal('show');
             });
