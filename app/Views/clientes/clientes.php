@@ -8,7 +8,7 @@
                                 echo $titulo ?></h3>
             <div>
                 <p>
-                    <a href="<?php echo base_url() ?>NuevoCliente" class="btn btn-info"> <i class="fa-solid fa-user-plus"></i> Agregar Cliente</a>
+                    <a href="<?php echo base_url() ?>NuevoCliente" class="btn btn-info" style="color: white"> <i class="fa-solid fa-user-plus" ></i> Agregar Cliente</a>
                     <a href="<?php echo base_url() ?>ClientesEliminados" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
                 </p>
             </div>
@@ -26,6 +26,7 @@
                             <th>País</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </thead>
                         <tbody>
                             <?php foreach ($Clientes as $dato) { ?>
@@ -40,6 +41,7 @@
                                     <td><?php echo $dato['cl_pais']; ?></td>
                                     <td><a href="<?php echo base_url() . 'EditarCliente/' . $dato['cl_id'] ?>" class="btn btn-warning " title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
                                     <td><a id="eliminarCliente" href="#" data-href="<?php echo base_url() . 'eliminarCliente/' . $dato['cl_id'] ?>" class="btn btn-danger btn-EliminarCliente" title="Eliminar Cliente"><i class="fa-solid fa-trash"></i></a></td>
+                                    <td><a id="agregarPedido" href="<?php echo base_url() . 'nuevoPedido/' . $dato['cl_id'] ?>" class="btn btn-primary" title="Agregar Pedido"><i class="fa-solid fa-cart-plus"></i></a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>

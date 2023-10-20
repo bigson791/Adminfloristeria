@@ -1,69 +1,119 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <h3 class="mt-4"><?php echo $titulo ?></h3>
+            <div class="row" style="padding-top: 8px; padding-bottom: 8px">
+                <div class="col-8">
+                    <h3 class="mt-4"><?php echo $titulo . ' &#8594 ' . $empresa['emp_nombre'] ?></h3>
+                </div>
+                <div class="col-4">
+                    <div class="text-center">
+                        <img src="<?php echo $empresa['emp_logo'] ?>" height="75px" width="150px">
+                    </div>
+                </div>
+            </div>
             <?php if (isset($validation)) { ?>
                 <div class="alert alert-danger">
                     <?php echo $validation->listErrors(); ?>
                 </div>
             <?php } ?>
             <div class="card mb-4">
-                <div class="row" style="padding-top: 25px; padding-left: 25px; padding-right: 25px;">
-                    <div class="card">
-                        <div class="text-center">
-                            <img id="imgProducto" src='' width="250px" height="250px">
-                        </div>
-                    </div>
-                </div>
                 <form method="post" action="<?php echo base_url(); ?>insertarProducto" autocomplete="off">
                     <div class="form-group">
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
                             <div class="col-lg-6 col-sm-6">
-                                <label>Código página web:</label>
-                                <input class="form-control" id="codPagina" name="codPagina" type="text" autofocus value="<?php echo set_value('codPagina'); ?>">
+                                <label hidden>Código cliente:</label>
+                                <input class="form-control" id="codPagina" name="codigoPersona" type="text" value="<?php echo $cliente['cl_id']; ?>" hidden>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <label>Fecha del Pedido</label>
+                                <input class="form-control" id="fechaPedido" name="fechaPedido" type="text" value="<?php echo date('Y-m-d') ?>" readonly>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
+                            <div class="col-lg-6 col-sm-6">
+                                <label>Nombres:</label>
+                                <input class="form-control" id="nombres" name="nombres" type="text" value="<?php echo $cliente['cl_nombres']; ?>" readonly>
                             </div>
                             <div class="col-lg-6 col-sm-6">
-                                <label>Nombre del producto:</label>
-                                <input class="form-control" id="nombreProducto" name="nombreProducto" type="text" autofocus required value="<?php echo set_value('nombreProducto'); ?>">
+                                <label>Apellidos:</label>
+                                <input class="form-control" id="apellidos" name="apellidos" type="text" value="<?php echo $cliente['cl_apellidos']; ?>" readonly>
                             </div>
                         </div>
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-md-12 col-sm-6">
-                                <label>Descripción:</label>
-                                <textarea class="form-control" id="descripcionProducto" name="descripcionProducto" type="textarea" rows="2" required value="<?php echo set_value('descripcionProducto'); ?>"></textarea>
+                            <div class="col-6 col-md-6 col-sm-6">
+                                <label>Telefono:</label>
+                                <input class="form-control" id="telefono" name="telefono" type="text" value="<?php echo $cliente['cl_telefono']; ?>" readonly></input>
+                            </div>
+                            <div class="col-6 col-md-6 col-sm-6">
+                                <label>Nit:</label>
+                                <input class="form-control" id="nit" name="nit" type="text" value="<?php echo $cliente['cl_nit']; ?>" readonly></input>
                             </div>
                         </div>
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-sm-6">
-                                <label>Precio Normal:</label>
+                            <div class="col-12 col-md-12 col-sm-12">
+                                <label>Correo:</label>
+                                <input class="form-control" id="telefono" name="telefono" type="text" value="<?php echo $cliente['cl_correo']; ?>" readonly></input>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
+                            <div class="col-8 col-md-8 col-sm-8">
+                                <label>Producto:</label>
+
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="precioN">Q.</span>
-                                    </div>
-                                    <input type="text" class="form-control" required id="precioNormal" name="precioNormal" value="<?php echo set_value('precioNormal'); ?>">
+                                    <select class="form-control js-example-responsive" id="producto" name="producto" style="width: 100%">
+                                        <option value="">Selecciona un producto</option>
+                                        <?php foreach ($productos as $producto) { ?>
+                                            <option value="<?php echo $producto['pr_id']; ?>" <?php if ($producto['pr_id'] == '1') {
+                                                                                                    echo 'selected';
+                                                                                                } ?>><?php echo $producto['pr_nombre'] ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
 
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <label>precio Rebajado:</label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="precioReba">Q.</span>
-                                    </div>
-                                    <input type="text" class="form-control" id="precioRebajado" name="precioRebajado" value="<?php echo set_value('precioRebajado'); ?>">
-                                </div>
+                            <div class="col-4 col-md-4 col-sm-4" style=" padding-top: 20px;">
+                                <button class=" btn btn-dark" id="addProduct"><i class="fa-solid fa-plus"></i> Agregar</button></span>
                             </div>
                         </div>
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-md-12 col-sm-6">
-                                <label>URL de la imagen:</label>
-                                <input class="form-control" id="urlImgProd" name="urlImgProd" type="text" required value="<?php echo set_value('urlImgProd'); ?>">
+                            <div class="col-8 col-md-8 col-sm-8">
+                                <label>Extra:</label>
+                                <select class="form-control js-example-responsive" id="extra" name="extra" style="width: 100%">
+                                    <option value="">Selecciona un Extra</option>
+                                    <?php foreach ($extras as $extra) { ?>
+                                        <option value="<?php echo $extra['pr_id']; ?>" <?php if ($extra['pr_id'] == '1') {
+                                                                                            echo 'selected';
+                                                                                        } ?>><?php echo $extra['pr_nombre'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-4 col-md-4 col-sm-4" style="padding-top: 20px;">
+                                <button class="btn btn-dark" id="addProduct"><i class="fa-solid fa-plus"></i> Agregar</button>
                             </div>
                         </div>
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-sm-6">
-                                <label>Empresa:</label>
-                                <input class="form-control" id="empresa" name="empresa" type="text" required value="1" readonly>
+                            <table class="table table-striped table-hover table-sm">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Diseño</th>
+                                    <th>Nombre Arreglo</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>Acción</th>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
+                            <div class="col-12 col-sm-6 offset-md-8">
+                                <label style="font-weight: bold; font-size: 30px; text-align:center;">Total Q.</label>
+                                <input type="text" id="total" name="total" size="7" class="form" style="font-weight: bold; font-size: 30px; text-align:center;" readonly value="0.00">
+                                <button type="button" class="btn btn-info">Finalizar</button>
                             </div>
                         </div>
                         <div class="text-center" style="padding-top: 20px;">
@@ -78,6 +128,13 @@
 
     <script>
         $(document).ready(function() {
+
+            $('#producto').select2({
+                width: 'resolve'
+            });
+            $('#extra').select2({
+                width: 'resolve'
+            });
             $('#urlImgProd').on('keyup', function(event) {
                 var urlImagen = $('#urlImgProd').val();
                 $('#imgProducto').attr("src", urlImagen);
@@ -159,6 +216,10 @@
                     e.preventDefault();
                 }
             });
+
+            $('#addProduct').on('click', function(e) {
+                e.preventDefault();
+            })
 
         });
 

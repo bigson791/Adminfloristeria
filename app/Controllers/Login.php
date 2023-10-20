@@ -58,6 +58,7 @@ class Login extends BaseController
                         'Apellidos' => $datosUsuario['us_apellidos'],
                         'rol' => $datosUsuario['us_rol'],
                         'caja' => $datosUsuario['us_id_caja'],
+                        'empresa'=>$datosUsuario['us_empresa'],                        
                     ];
 
                     $session = session();

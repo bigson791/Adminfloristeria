@@ -17,6 +17,8 @@
         <link href="<?php echo base_url()?>css/jquery.dataTables.min.css" rel="stylesheet" />
         <link href="<?php echo base_url()?>css/bootstrap.min.css" rel="stylesheet">
         <link href="<?php echo base_url()?>css/style.min.css" rel="stylesheet">
+        <link href="<?php echo base_url()?>css/sweetalert2.min.css" rel="stylesheet">
+        <link href="<?php echo base_url()?>css/select2.min.css" rel="stylesheet">
         <script src="<?php echo base_url()?>js/all.js"></script>
         <script src="<?php echo base_url()?>js/jquery-3.7.1.min.js"></script>
     </head>    

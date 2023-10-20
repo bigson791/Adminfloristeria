@@ -34,10 +34,11 @@ $routes->get('eliminarProducto/(:num)','Productos::deleteProduct/$1');
 $routes->get('ProductosEliminados', 'Productos::seeDeleteProduct');
 $routes->get('reingresarProducto/(:num)', 'Productos::reEnterProduct/$1');
 #/Rutas de productos
-$routes->get('pedidos', 'Pedidos::index');
-$routes->get('nuevoPedido', 'Pedidos::index');
+
 
 #Rutas de Pedidos
+$routes->get('pedidos', 'Pedidos::index');
+$routes->get('nuevoPedido/(:num)', 'Pedidos::newOrder/$1');
 
 #/Rutas de pedidos
 
