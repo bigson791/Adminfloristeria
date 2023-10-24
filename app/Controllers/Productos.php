@@ -45,8 +45,13 @@ class Productos extends BaseController
     }
     public function index($activo = 'A')
     {
+        $session = session();
+        $paramsProducts = array(
+            'pr_estado' => 'A',
+            'pr_empresa' => $session->empresa
+        );
 
-        $productos = $this->productos->where(['pr_estado' => $activo])->findAll();
+        $productos = $this->productos->where($paramsProducts)->findAll();
         $data = ['titulo' => 'Productos', 'productos' => $productos];
 
         echo view('header');
@@ -99,6 +104,7 @@ class Productos extends BaseController
 
     public function upProduct(string $idProducto, $valid = null)
     {
+
         $producto = $this->productos->where('pr_id', $idProducto)->first();
         if($valid!=null){
             $data = ['titulo' => 'Editando Producto', 'datos' => $producto,'validation'=>$valid];

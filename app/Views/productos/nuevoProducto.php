@@ -92,23 +92,16 @@
       $('#precioNormal').on('input', function(e) {
         var inputValor = $(this).val();
 
-        if (inputValor === "") {
-          // Si el campo está vacío, permitimos que se ingrese un punto nuevamente.
-          puntoIngresado2 = false;
-          return; // No realizamos más validaciones en un campo vacío.
-        }
-
-        if (inputValor.includes('.')) {
-          // Si el punto ya está presente, eliminamos puntos adicionales.
-          var partes = inputValor.split('.');
-          inputValor = partes[0] + '.' + partes.slice(1).join('');
-        }
-
+        // Remover caracteres no numéricos, excepto un punto decimal
+        inputValor = inputValor.replace(/[^\d.]/g, '');
+        // Verificar que el valor sea un número decimal válido
         if (isNaN(parseFloat(inputValor))) {
-          // Si el valor no es un número, eliminamos el último carácter ingresado.
-          inputValor = inputValor.slice(0, -1);
+          inputValor = "";
         }
-
+        // Garantizar que solo haya un punto decimal
+        if (inputValor.indexOf('.') !== inputValor.lastIndexOf('.')) {
+          inputValor = inputValor.slice(0, inputValor.lastIndexOf('.'));
+        }
         $(this).val(inputValor);
       });
 
@@ -116,37 +109,32 @@
 
       $('#precioRebajado').on('input', function(e) {
         var inputValor = $(this).val();
-
-        if (inputValor === "") {
-          // Si el campo está vacío, permitimos que se ingrese un punto nuevamente.
-          puntoIngresado2 = false;
-          return; // No realizamos más validaciones en un campo vacío.
-        }
-
-        if (inputValor.includes('.')) {
-          // Si el punto ya está presente, eliminamos puntos adicionales.
-          var partes = inputValor.split('.');
-          inputValor = partes[0] + '.' + partes.slice(1).join('');
-        }
-
+        // Remover caracteres no numéricos, excepto un punto decimal
+        inputValor = inputValor.replace(/[^\d.]/g, '');
+        // Verificar que el valor sea un número decimal válido
         if (isNaN(parseFloat(inputValor))) {
-          // Si el valor no es un número, eliminamos el último carácter ingresado.
-          inputValor = inputValor.slice(0, -1);
+          inputValor = "";
         }
-
+        // Garantizar que solo haya un punto decimal
+        if (inputValor.indexOf('.') !== inputValor.lastIndexOf('.')) {
+          inputValor = inputValor.slice(0, inputValor.lastIndexOf('.'));
+        }
         $(this).val(inputValor);
       });
 
       $('#precioRebajado').on('keypress', function(e) {
-        var charCode = (e.which) ? e.which : e.keyCode;
-
-        if (charCode === 46 && puntoIngresado2) {
-          // Si se presiona el punto y ya se ha ingresado uno, prevenimos la entrada.
-          e.preventDefault();
-        } else if (charCode === 46) {
-          // Si se presiona el punto por primera vez, lo marcamos como ingresado.
-          puntoIngresado2 = true;
+        var inputValor = $(this).val();
+        // Remover caracteres no numéricos, excepto un punto decimal
+        inputValor = inputValor.replace(/[^\d.]/g, '');
+        // Verificar que el valor sea un número decimal válido
+        if (isNaN(parseFloat(inputValor))) {
+          inputValor = "";
         }
+        // Garantizar que solo haya un punto decimal
+        if (inputValor.indexOf('.') !== inputValor.lastIndexOf('.')) {
+          inputValor = inputValor.slice(0, inputValor.lastIndexOf('.'));
+        }
+        $(this).val(inputValor);
       });
 
       $('#codPagina').on('keypress', function(e) {

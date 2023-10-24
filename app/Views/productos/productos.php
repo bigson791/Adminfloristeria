@@ -4,7 +4,7 @@
       <h3 class="mt-4"><?php echo $titulo ?></h3>
       <div>
         <p>
-          <a href="<?php echo base_url() ?>NuevoProducto" class="btn btn-info"> <i class="fa-solid fa-box"></i> Agregar Producto</a>
+          <a href="<?php echo base_url() ?>NuevoProducto" class="btn btn-info" style="color: white;" > <i class="fa-solid fa-box"></i> Agregar Producto</a>
           <a href="<?php echo base_url() ?>ProductosEliminados" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
         </p>
       </div>

@@ -51,10 +51,17 @@ class Clientes extends BaseController
             ]
         ];
     }
-    public function index($activo = 'A')
+    public function index()
     {
 
-        $clientes = $this->clientes->where('cl_estado', $activo)->findAll();
+        $session = session();
+        $paramsCustumer = array(
+            'cl_estado' => 'A',
+            'fk_empresa' => $session->empresa
+        );
+
+
+        $clientes = $this->clientes->where($paramsCustumer)->findAll();
 
         $data = ['titulo' => 'Clientes', 'Clientes' => $clientes];
 
