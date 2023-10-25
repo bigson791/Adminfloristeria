@@ -17,7 +17,7 @@
                 </div>
             <?php } ?>
             <div class="card mb-4">
-                <form method="post" action="<?php echo base_url(); ?>insertarProducto" autocomplete="off">
+                <form method="post" id="formularioPedido" autocomplete="off">
                     <div class="form-group">
                         <div id="datosCliente" class="row" style="padding-left: 32px; padding-right: 32px; padding-top: 15px">
                             <div class="alert alert-dark" role="alert" style="background-color:slategray; color:white; font-weight: bold;">
@@ -41,7 +41,8 @@
                                 </div>
                                 <div class="col-lg-12 col-sm-12">
                                     <label>Fecha del Pedido</label>
-                                    <input class="form-control" id="fechaPedido" name="fechaPedido" type="text" value="<?php echo date('Y-m-d') ?>" readonly>
+                                    <input class="form-control" id="fechaPedido" name="fechaPedido" type="text" value="<?php date_default_timezone_set('America/Guatemala');
+                                                                                                                        echo date('Y-m-d') ?>" readonly>
                                 </div>
                             </div>
                             <div class="row">
@@ -89,38 +90,122 @@
                             <div class="row">
                                 <div class="col-6 col-md-6 col-sm-6">
                                     <label>Nombre Recibe:</label>
-                                    <input class="form-control" id="nomRecibe" name="nomRecibe" type="text"></input>
+                                    <input class="form-control" id="nomRecibe" name="nomRecibe" type="text" required></input>
                                 </div>
                                 <div class="col-6 col-md-6 col-sm-6">
                                     <label>Fecha Entrega:</label>
-                                    <input class="form-control" id="fechaEntrega" name="fechaEntrega" type="date"></input>
+                                    <input class="form-control" id="fechaEntrega" name="fechaEntrega" type="date" required></input>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-6 col-sm-6">
                                     <label>Telefono Recibe:</label>
-                                    <input class="form-control" id="telRecibe" name="telRecibe" type="tel"></input>
+                                    <input class="form-control" id="telRecibe" name="telRecibe" type="tel" required></input>
                                 </div>
                                 <div class="col-6 col-md-6 col-sm-6">
                                     <label>Departamento Entrega:</label>
-                                    <input class="form-control" id="depEntrega" name="depEntrega" type="text"></input>
+                                    <select class="form-control form-select" id="departamentos" name="departamentos" required>
+                                        <option value="">Selecciona una opción</option>
+                                        <?php foreach ($departamentos as $departamento) { ?>
+                                            <option value="<?php echo $departamento['dep_id']; ?>" <?php if ($departamento['dep_id'] == '0') {
+                                                                                                        echo 'selected';
+                                                                                                    } ?>><?php echo $departamento['dep_nombre'] ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-6 col-sm-6">
                                     <label>Municipio Entrega:</label>
-                                    <input class="form-control" id="munEntrega" name="munEntrega" type="text"></input>
+                                    <select name="municipios" id="municipios" class="form-control form-select" required>
+                                        <option value="">Selecciona una opción</option>
+                                    </select>
                                 </div>
                                 <div class="col-6 col-md-6 col-sm-6">
                                     <label>Zona Entrega:</label>
-                                    <input class="form-control" id="zonaEntrega" name="zonaEntrega" type="text"></input>
+                                    <select class="form-control form-select" id="zonaEntrega" name="zonaEntrega" required>
+                                        <option value="">Selecciona una opción</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12 col-md-12 col-sm-12">
                                     <label>Dirección Entrega:</label>
-                                    <input class="form-control" id="dirEntrega" name="dirEntrega" type="text"></input>
+                                    <input class="form-control" id="dirEntrega" name="dirEntrega" type="text" required></input>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 col-md-4 col-sm-4">
+                                    <label>Firma</label>
+                                    <input class="form-control" id="firma" name="firma" type="text"></input>
+                                </div>
+                                <div class="col-4 col-md-4 col-sm-4">
+                                    <label>Costo del Envío(Q.):</label>
+                                    <input class="form-control" id="costoEnvio" name="costoEnvio" type="text" required></input>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-sm-12">
+                                    <label>Texto para la tarjeta:</label>
+                                    <textarea class="form-control" id="leyendatarjeta" name="leyendatarjeta" type="text" rows="4" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="otrosDatos" class="row" style="padding-left: 32px; padding-right: 32px;">
+                            <div class="alert alert-dark" role="alert" style="background-color:slategray; color:white; font-weight: bold;">
+                                <div class="row">
+                                    <div class="col-8">
+                                        Otros Datos
+                                    </div>
+                                    <div class="col-4">
+                                        <div>
+                                            <i class="fa-solid fa-chevron-down" id="mostrarAgregarProductos" style="float:right; padding-top: 5px" onclick="showHideForm('mostrarFormOtrosDatos')"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left: 20px; padding-right: 20px; padding-bottom: 20px; display:none" id="mostrarFormOtrosDatos">
+                            <div class="row">
+                                <div class="col-4 col-sm-4">
+                                    <label># Orden Pagina Web:</label>
+                                    <input class="form-control" id="ordenPW" name="ordenPW" type="text"></input>
+                                </div>
+                                <div class="col-4 col-sm-4">
+                                    <label>Forma de pago:</label>
+                                    <select class="form-control form-select" id="formaPago" name="formaPago" required>
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="Tarjeta">Tarjeta Crédito ó Débido</option>
+                                        <option value="Deposito">Deposito Bancario</option>
+                                        <option value="Link de Pago">Link de pago</option>
+                                        <option value="Remesa">Remesa</option>
+                                        <option value="Efectivo">Efectivo</option>
+                                    </select>
+                                </div>
+                                <div class="col-4 col-sm-4">
+                                    <label>Comprobante:</label>
+                                    <input class="form-control" id="comprobante" name="comprobante" type="text"></input>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-12">
+                                    <label>Sucursal en donde se fabricará:</label>
+                                    <select class="form-control form-select" id="fabrica" name="fabrica" required>
+                                        <option value="">Selecciona una opción</option>
+                                        <?php foreach ($sucursales as $sucursal) { ?>
+                                            <option value="<?php echo $sucursal['suc_id']; ?>" <?php if ($sucursal['suc_id'] == '0') {
+                                                                                                    echo 'selected';
+                                                                                                } ?>><?php echo $sucursal['suc_nombre'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-12">
+                                    <label>Observaciones Adicionales:</label>
+                                    <textarea class="form-control" id="observaciones" name="observaciones" type="text" rows="4"></textarea>
+                                </div>
+
                             </div>
                         </div>
                         <div id="agregarProductos" class="row" style="padding-left: 32px; padding-right: 32px;">
@@ -239,24 +324,86 @@
                             <div class="col-12 col-sm-12">
                                 <label style="font-weight: bold; font-size: 30px; text-align:center;">Total Q.</label>
                                 <input type="text" id="total" name="total" size="7" class="form" style="font-weight: bold; font-size: 30px; text-align:center;" readonly value="0.00">
-                                <button type="button" class="btn btn-info">Finalizar</button>
                             </div>
                         </div>
-                        <!-- <div class="row">
-                            <div class="text-center row" style="padding-top: 20px;">
-                                <a class="btn btn-primary" style="color: white;" href="<?php echo base_url() ?>productos"> <i class="fa-solid fa-rotate-left"></i> Regresar</a>
-                                <button type="submit" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
-                            </div>
-                        </div> -->
                     </div>
                 </form>
+                <div class="row" style="padding-left: 20px; padding-right: 20px; padding-bottom:20px; float:right">
+                    <div class="col-12 col-md-12">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-info btn-lg" style="color:white" onclick="generarPedido();"><i class="fa-regular fa-floppy-disk"></i> Finalizar este pedido</button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
-        var detPedido = [];
+        var detPedido = [],
+            datosEnvio = [];
         $(document).ready(function() {
+            $('#departamentos').on('change', function() {
+                codigoDepto = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url(); ?>obtenerMunicipios/" + codigoDepto,
+                    data: "data",
+                    dataType: "json",
+                    success: function(response) {
+                        var $select = $('#municipios');
+
+                        // Limpiar el select (opcional)
+                        $select.empty().append('<option value="">Selecciona una opción</option>');
+
+                        // Agregar opciones al select basadas en la respuesta AJAX
+                        $.each(response, function(index, item) {
+                            $select.append($('<option>', {
+                                value: item.mun_id,
+                                text: item.mun_nombre
+                            }));
+                        });
+
+                    }
+                });
+            });
+            $('#municipios').on('change', function() {
+                datosEnvio = [];
+                codigoMuni = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url(); ?>obtenerZonasEnvio/" + codigoMuni,
+                    data: "data",
+                    dataType: "json",
+                    success: function(response) {
+                        var $select = $('#zonaEntrega');
+
+                        // Limpiar el select (opcional)
+                        $select.empty().append('<option value="">Selecciona una opción</option>');
+
+                        // Agregar opciones al select basadas en la respuesta AJAX
+                        $.each(response, function(index, item) {
+                            datosEnvio.push(item);
+                            $select.append($('<option>', {
+                                value: item.env_id,
+                                text: item.env_nombre
+                            }));
+                        });
+
+                    }
+                });
+            });
+            $('#costoEnvio').on('blur', function() {
+                actualizarPrecio();
+            });
+            $('#zonaEntrega').on('change', function() {
+                codigoZona = $(this).val();
+
+                let indZona = datosEnvio.findIndex((zona) => zona.env_id === codigoZona);
+                $('#costoEnvio').val(datosEnvio[indZona].env_precio);
+                actualizarPrecio();
+            });
 
             $('#producto').select2({
                 width: 'resolve'
@@ -313,12 +460,22 @@
 
             var nombre = $('#nombreProducto');
             var descripcion = $('#descripcionProducto');
+            var nombreRecibe = $('#nomRecibe');
+            var dirEntrega = $('#dirEntrega');
+            var firma = $('#firma');
+            var comprobante = $('#comprobante');
+            var observaciones = $('#observaciones');
             procesarInput(nombre);
             procesarInput(descripcion);
+            procesarInput(nombreRecibe);
+            procesarCadena(dirEntrega);
+            procesarCadena(firma);
+            procesarCadena(comprobante);
+            procesarCadena(observaciones);
             var puntoIngresado = false,
                 puntoIngresado2 = false;
 
-            $('#precioProducto, #precioExtra').on('input', function(e) {
+            $('#precioProducto, #precioExtra, #costoEnvio').on('input', function(e) {
                 var inputValor = $(this).val();
 
                 // Remover caracteres no numéricos, excepto un punto decimal
@@ -334,7 +491,7 @@
                 $(this).val(inputValor);
             });
 
-            $('#cantProducto, #cantExtra').on('keypress', function(e) {
+            $('#cantProducto, #cantExtra, #telRecibe, #ordenPW').on('keypress', function(e) {
                 // Obtener el código de la tecla presionada
                 var charCode = (e.which) ? e.which : e.keyCode;
                 // Verificar si la tecla presionada es un número (0-9)
@@ -373,7 +530,7 @@
                 $(this).val(inputValor);
             });
 
-            $('#precioNormal').on('input', function(e) {
+            $('#precioNormal, #costoEnvio').on('input', function(e) {
                 var inputValor = $(this).val();
 
                 if (inputValor === "") {
@@ -410,7 +567,7 @@
                     var caracter = texto[i];
 
                     // Verificar si el carácter es una letra (no es un número) o un espacio en blanco
-                    if (caracter.match(/[a-zA-Z\s0-9,]/)) {
+                    if (caracter.match(/[a-zA-Z\s]/)) {
                         textoLimpio += caracter.toUpperCase();
                     }
                 }
@@ -488,8 +645,7 @@
                 descripcion = Productos[indice]['pr_descripcion'];
                 imagen = Productos[indice]['pr_imagen'];
                 almacenarDetallePedido(codigo, imagen, nombre, descripcion, precio, cantidad);
-                var total = obtenerTotal(detPedido).toFixed(2);
-                $('#total').val(total);
+                actualizarPrecio();
                 $('#' + nom).val("");
                 $('#' + cant).val("");
                 $('#' + prec).val("");
@@ -584,7 +740,7 @@
                         if (indiceProducto !== -1) {
                             // Eliminar el producto del arreglo
                             detPedido.splice(indiceProducto, 1);
-
+                            actualizarPrecio();
                             // Eliminar la fila en DataTable y en la tabla HTML
                             fila.remove();
 
@@ -637,5 +793,115 @@
                 suma += arreglo[i].subtotal;
             }
             return suma;
+        }
+
+        function actualizarPrecio() {
+            var envio = parseInt($('#costoEnvio').val());
+            var total = parseFloat(obtenerTotal(detPedido)) + parseFloat(envio);
+            $('#total').val(total.toFixed(2));
+        }
+
+        function generarPedido() {
+            if ($('#nomRecibe').val() === '' || $('#fechaEntrega').val() === '' || $('#telRecibe').val() === '' || $('#zonaEntrega').val() === '' || $('#dirEntrega').val() === '' ||
+                $('#firma').val() === '' || $('#costoEnvio').val() === '' || $('#leyendatarjeta').val() === '' || $('#formaPago').val() === '' || $('#fabrica').val() === '' || $('#costoEnvio').val() === '0') {
+
+                if ($('#nomRecibe').val() === '') {
+                    mostrarError($('#nomRecibe').prop("id"));
+                }
+                if ($('#fechaEntrega').val() === '') {
+                    mostrarError($('#fechaEntrega').prop("id"));
+                }
+                if ($('#telRecibe').val() === '') {
+                    mostrarError($('#telRecibe').prop("id"));
+                }
+                if ($('#zonaEntrega').val() === '') {
+                    mostrarError($('#zonaEntrega').prop("id"));
+                }
+                if ($('#dirEntrega').val() === '') {
+                    mostrarError($('#dirEntrega').prop("id"));
+                }
+                if ($('#firma').val() === '') {
+                    mostrarError($('#firma').prop("id"));
+                }
+                if ($('#costoEnvio').val() === '') {
+                    mostrarError($('#costoEnvio').prop("id"));
+                }
+                if ($('costoEnvio').val() === '0') {
+                    mostrarError($('#costoEnvio').prop("id"));
+                }
+                if ($('#leyendatarjeta').val() === '') {
+                    mostrarError($('#leyendatarjeta').prop("id"));
+                }
+                if ($('#formaPago').val() === '') {
+                    mostrarError($('#formaPago').prop("id"));
+                }
+                if ($('#fabrica').val() === '') {
+                    mostrarError($('#fabrica').prop("id"));
+                }
+
+            } else if ($('#codigoCliente').val() === '' || detPedido.length === 0) {
+
+                if ($('#codigoCliente').val() === '') {
+                    swal.fire({
+                        icon: 'error',
+                        title: '¡Error!',
+                        text: 'Al parecer el codigo del cliente no existe, vuelve a intentarlo. ',
+                    })
+                }
+                if (detPedido.length === 0) {
+                    swal.fire({
+                        icon: 'error',
+                        title: '¡Error!',
+                        text: 'Debes agregar productos',
+                    })
+                }
+            } else {
+                var encabezado = $("#formularioPedido").serialize();
+                var detallePedido = JSON.stringify(detPedido);
+                console.log(detallePedido);
+                console.log(encabezado);
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url() ?>generarPedido",
+                    data: {
+                        encabezado: encabezado,
+                        detallePedido: detallePedido
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        
+                    }
+                });
+
+            }
+        }
+
+        function procesarCadena(input) {
+            input.on('input', function() {
+                var texto = input.val();
+                var textoLimpio = '';
+
+                // Recorrer cada carácter en el texto de entrada
+                for (var i = 0; i < texto.length; i++) {
+                    var caracter = texto[i];
+
+                    // Verificar si el carácter es una letra (no es un número) o un espacio en blanco
+                    if (caracter.match(/[a-zA-Z\s0-9-,.]/)) {
+                        textoLimpio += caracter.toUpperCase();
+                    }
+                }
+
+                // Establecer el valor del campo de entrada como el texto modificado
+                input.val(textoLimpio);
+            });
+        }
+
+        function mostrarError(nombreCampo) {
+            swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: 'El campo' + nombreCampo + 'no puede estar vacío',
+            });
+            $('#' + nombreCampo).focus();
         }
     </script>

@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 namespace App\Models;
+
 use CodeIgniter\Model;
 
 class MunicipiosModelo extends Model
@@ -13,7 +14,7 @@ class MunicipiosModelo extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['mun_cod', 'mun_nombre','dep_id'];
+    protected $allowedFields = ['mun_cod', 'mun_nombre', 'dep_id', 'mun_estado'];
 
     // Dates
     protected $useTimestamps = true;
@@ -39,6 +40,16 @@ class MunicipiosModelo extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-}
+    public function getMunicipios($idDepto)
+    {
+        $paramMuni = array(
+            'dep_id' => $idDepto,
+            'mun_estado' => 'A'
+        );
+        $this->select('*');
+        $this->where($paramMuni);
 
-?>
+        $municipios = $this->get()->getRow();
+        return $municipios;
+    }
+}

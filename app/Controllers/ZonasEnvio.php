@@ -22,25 +22,31 @@ class ZonasEnvio extends BaseController
 
         helper(['form']);
         $this->reglas = [
-            'nombre' => [
+            'departamentos' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
                 ],
             ],
-            'telefono' => [
+            'municipios' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
                 ],
             ],
-            'nit' => [
+            'zona' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
                 ],
             ],
-            'UrldelLogo' => [
+            'costoEnvio' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'nomZona' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
@@ -56,24 +62,25 @@ class ZonasEnvio extends BaseController
         $data = ['titulo' => 'Zonas Envío', 'zonasenvio' => $zonasenvio];
 
         echo view('header');
-        echo view('zonasenvio/zonasenvio', $data);
+        echo view('zonasenvio/zonasEnvios', $data);
         echo view('footer');
     }
 
-    public function seeDeleteCompany($activo = 'E')
+    public function seeDeleteShipping($activo = 'E')
     {
 
-        $zonasenvio = $this->zonasenvio->where('emp_estado', $activo)->findAll();
+        $zonasenvio = $this->zonasenvio->where('env_estado', $activo)->findAll();
         $data = ['titulo' => 'Zonas Envío Eliminadas', 'zonasenvio' => $zonasenvio];
 
         echo view('header');
-        echo view('zonasenvio/zonasenvioEliminadas', $data);
+        echo view('zonasenvio/zonasEnviosEliminadas', $data);
         echo view('footer');
     }
 
     public function newShipping()
     {
-        $data = ['titulo' => 'Agregar Nueva ZonaEnvio'];
+        $departamentos = $this->departamentos->where('dep_estado', 'A')->findAll();
+        $data = ['titulo' => 'Agregar Nueva ZonaEnvio', 'departamentos' => $departamentos];
 
         echo view('header');
         echo view('zonasenvio/nuevaZonaEnvio', $data);
@@ -85,33 +92,46 @@ class ZonasEnvio extends BaseController
         if ($this->request->getMethod() == "post" && $this->validate($this->reglas)) {
             $this->zonasenvio->save(
                 [
-                    'emp_nombre' => $this->request->getPost('nombre'), 'emp_direccion' => $this->request->getPost('Direccion'), 'emp_telefono' => $this->request->getPost('telefono'),
-                    'emp_nit' => $this->request->getPost('nit'), 'emp_logo' => $this->request->getPost('UrldelLogo'), 'emp_estado' => 'A'
+                    'env_muni' => $this->request->getPost('municipios'),
+                    'env_dep' => $this->request->getPost('departamentos'),
+                    'env_nombre' => $this->request->getPost('nomZona'),
+                    'env_precio' => $this->request->getPost('costoEnvio'),
+                    'env_zona' => $this->request->getPost('zona'),
+                    'env_ruta' => $this->request->getPost('ruta'),
+                    'env_estado' => 'A'
                 ]
 
             );
-            return redirect()->to(base_url() . "zonasenvio");
+            return redirect()->to(base_url() . "zonasEnvios");
         } else {
-            $data = ['titulo' => 'Agregar Nueva Empresa', 'validation' => $this->validator];
+
+            $departamentos = $this->departamentos->where('dep_estado', 'A')->findAll();
+            $data = ['titulo' => 'Agregar Nueva Zona Envío', 'validation' => $this->validator, 'departamentos' => $departamentos];
             echo view('header');
             echo view('zonasenvio/nuevaZonaEnvio', $data);
             echo view('footer');
         }
     }
 
-    public function upShipping(string $idEmpresa, $valid = null)
+    public function upShipping(string $idZona, $valid = null)
     {
-        $paises = $this->paises->findAll();
-        $empresa = $this->zonasenvio->where('emp_id', $idEmpresa)->first();
+        $zonaenvio = $this->zonasenvio->where('env_id', $idZona)->first();
+        $departamentos = $this->departamentos->findAll();
+        $paramMuni = array(
+            'dep_id' => $zonaenvio['env_dep'],
+            'mun_estado' => 'A'
+        );
+
+        $municipios = $this->municipios->where($paramMuni)->findAll();
         if ($valid != null) {
-            $data = ['titulo' => 'Editando Empresa', 'datos' => $empresa, 'Paises' => $paises, 'validation' => $valid];
+            $data = ['titulo' => 'Editando Zona Envio', 'departamentos' => $departamentos, 'municipios' => $municipios, 'data' => $zonaenvio, 'validation' => $valid];
         } else {
-            $data = ['titulo' => 'Editando Cliente', 'datos' => $empresa, 'Paises' => $paises];
+            $data = ['titulo' => 'Editando Zona Envio', 'departamentos' => $departamentos, 'municipios' => $municipios, 'data' => $zonaenvio];
         }
 
 
         echo view('header');
-        echo view('zonasenvio/editarEmpresa', $data);
+        echo view('zonasenvio/editarZonaEnvio', $data);
         echo view('footer');
     }
 
@@ -119,15 +139,20 @@ class ZonasEnvio extends BaseController
     {
         if ($this->request->getMethod() == "post" && $this->validate($this->reglas)) {
             $this->zonasenvio->update(
-                $this->request->getPost('codigoEmpresa'),
+                $this->request->getPost('codigoZona'),
                 [
-                    'emp_nombre' => $this->request->getPost('nombre'), 'emp_direccion' => $this->request->getPost('Direccion'), 'emp_telefono' => $this->request->getPost('telefono'),
-                    'emp_nit' => $this->request->getPost('nit'), 'emp_logo' => $this->request->getPost('UrldelLogo'), 'emp_estado' => 'A'
+                    'env_muni' => $this->request->getPost('municipios'),
+                    'env_dep' => $this->request->getPost('departamentos'),
+                    'env_nombre' => $this->request->getPost('nomZona'),
+                    'env_precio' => $this->request->getPost('costoEnvio'),
+                    'env_zona' => $this->request->getPost('zona'),
+                    'env_ruta' => $this->request->getPost('ruta'),
+                    'env_estado' => 'A'
                 ]
             );
-            return redirect()->to(base_url() . "zonasenvio");
+            return redirect()->to(base_url() . "zonasEnvios");
         } else {
-            return $this->upShipping($this->request->getPost('codigoEmpresa'), $this->validator);
+            return $this->upShipping($this->request->getPost('codigoZona'), $this->validator);
         }
     }
 
@@ -135,17 +160,29 @@ class ZonasEnvio extends BaseController
     {
         $this->zonasenvio->update(
             $idCompany,
-            ['emp_estado' => 'E']
+            ['env_estado' => 'E']
         );
-        return redirect()->to(base_url() . "zonasenvio");
+        return redirect()->to(base_url() . "zonasEnvios");
     }
 
-    public function reEnterShipping($idCompany)
+    public function reEnterShipping($idShipping)
     {
         $this->zonasenvio->update(
-            $idCompany,
-            ['emp_estado' => 'A']
+            $idShipping,
+            ['env_estado' => 'A']
         );
-        return redirect()->to(base_url() . "zonasenvioEliminados");
+        return redirect()->to(base_url() . "zonasEnviosEliminadas");
+    }
+
+    public function getMunicipios($idDepto)
+    {
+        $paramMuni = array(
+            'dep_id' => $idDepto,
+            'mun_estado' => 'A'
+        );
+
+        $municipios = $this->municipios->where($paramMuni)->findAll();
+
+        return json_encode($municipios);
     }
 }

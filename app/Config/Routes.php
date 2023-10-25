@@ -39,6 +39,8 @@ $routes->get('reingresarProducto/(:num)', 'Productos::reEnterProduct/$1');
 #Rutas de Pedidos
 $routes->get('pedidos', 'Pedidos::index');
 $routes->get('nuevoPedido/(:num)', 'Pedidos::newOrder/$1');
+$routes->post('obtenerZonasEnvio/(:num)', 'Pedidos::ZonasEnvio/$1');
+
 
 #/Rutas de pedidos
 
@@ -99,5 +101,19 @@ $routes->get('reingresarUsuarios/(:num)', 'Usuarios::reEnterUser/$1');
 $routes->post('actualizarContrasena', 'usuarios::changePassword');
 
 #/Rutas de Usuarios
+
+#Rutas de zonas de envio
+$routes->get('zonasEnvios', 'ZonasEnvio::index');
+$routes->get('nuevaZonaEnvio', 'ZonasEnvio::newShipping');
+$routes->post('insertarZonaEnvio', 'ZonasEnvio::insertShipping');
+$routes->get('editarZonaEnvio/(:num)', 'ZonasEnvio::upShipping/$1');
+$routes->post('actualizarZonaEnvio', 'ZonasEnvio::updateShipping');
+$routes->get('eliminarZonaEnvio/(:num)', 'ZonasEnvio::deleteShipping/$1');
+$routes->get('zonasEnviosEliminadas', 'ZonasEnvio::seeDeleteShipping');
+$routes->get('reingresarZonaEnvio/(:num)', 'ZonasEnvio::reEnterShipping/$1');
+$routes->post('obtenerMunicipios/(:num)', 'ZonasEnvio::getMunicipios/$1');
+
+
+#/Rutas de zonas de envio
 
 $routes->get('login', 'Login::index');

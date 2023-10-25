@@ -4,15 +4,18 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ClienteModelo;
+use App\Models\DepartamentosModelo;
 use App\Models\EmpresasModelo;
 use App\Models\PedidosModel;
 use App\Models\PedidosModelo;
 use App\Models\ProductoModelo;
+use App\Models\SucursalesModelo;
+use App\Models\ZonasEnvioModelo;
 
-class pedidos extends BaseController
+class Pedidos extends BaseController
 {
-    protected $pedidos, $empresas, $cliente, $productos;
-    protected $reglas;
+    protected $pedidos, $empresas, $cliente, $productos, $departamento, $zonaEnvio;
+    protected $reglas, $sucursales;
 
     public function __construct()
     {
@@ -20,8 +23,9 @@ class pedidos extends BaseController
         $this->empresas = new EmpresasModelo();
         $this->cliente = new ClienteModelo();
         $this->productos = new ProductoModelo();
-
-
+        $this->departamento = new DepartamentosModelo();
+        $this->zonaEnvio = new ZonasEnvioModelo();
+        $this->sucursales = new SucursalesModelo();
         helper(['form']);
     }
     public function index($activo = 'A')
@@ -73,17 +77,25 @@ class pedidos extends BaseController
             'pr_empresa' => $session->empresa
         );
 
+        $paramsSucursal = array(
+            'suc_estado' => 'A',
+            'suc_empresa' => $session->empresa
+        );
 
+        $departamentos = $this->departamento->where('dep_estado', 'A')->findAll();
         $cliente = $this->cliente->where($paramsCustumer)->first();
         $empresa = $this->empresas->where($params)->first();
         $productos = $this->productos->where($paramsProducts)->findAll();
         $extras = $this->productos->where($paramsExtras)->findAll();
+        $sucursales = $this->sucursales->where($paramsSucursal)->findAll();
         $data = [
             'titulo' => 'Nueva Orden',
             'empresa' => $empresa,
             'cliente' => $cliente,
             'productos' => $productos,
-            'extras' => $extras
+            'extras' => $extras,
+            'departamentos' => $departamentos,
+            'sucursales' => $sucursales
         ];
 
         echo view('header');
@@ -91,7 +103,7 @@ class pedidos extends BaseController
         echo view('footer');
     }
 
-    public function insertProduct()
+    public function generateOrder()
     {
         if ($this->request->getMethod() == 'post' && $this->validate($this->reglas)) {
             $this->pedidos->save(
@@ -163,5 +175,16 @@ class pedidos extends BaseController
             ['pr_estado' => 'A']
         );
         return redirect()->to(base_url() . "pedidosEliminados");
+    }
+
+    public function zonasEnvio($idMunicipio)
+    {
+        $paramMuni = array(
+            'env_muni' => $idMunicipio,
+            'env_estado' => 'A'
+        );
+
+        $zonaEnvio = $this->zonaEnvio->where($paramMuni)->findAll();
+        return json_encode($zonaEnvio);
     }
 }

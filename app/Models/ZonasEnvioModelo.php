@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 namespace App\Models;
+
 use CodeIgniter\Model;
 
 class ZonasEnvioModelo extends Model
@@ -13,7 +14,7 @@ class ZonasEnvioModelo extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['env_muni', 'env_precio','env_zona', 'env_ruta', 'env_estado'];
+    protected $allowedFields = ['env_muni', 'env_dep' ,'env_precio', 'env_zona', 'env_ruta', 'env_estado', 'env_nombre'];
 
     // Dates
     protected $useTimestamps = true;
@@ -38,5 +39,4 @@ class ZonasEnvioModelo extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
 }
