@@ -92,9 +92,9 @@ if ($session_user != null) {
                         </a>
                         <div class="collapse" id="collapsePedidos" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?php echo base_url() ?>pedidos">Ver Pedidos</a>
-                                <a class="nav-link" href="<?php echo base_url() ?>nuevoPedido">Agregar</a>
-                                <a class="nav-link" href="<?php echo base_url() ?>fabricarPedido">Fabricar pedido</a>
+                                <a class="nav-link" href="<?php echo base_url() ?>pedidosPendientes">Pedidos Pendientes</a>
+                                <a class="nav-link" href="<?php echo base_url() ?>pedidosRuta">Pedidos en Ruta</a>
+                                <a class="nav-link" href="<?php echo base_url() ?>pedidosCompletados">Pedidos Completados</a>
                             </nav>
                         </div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConfiguracion" aria-expanded="false" aria-controls="collapsePages">

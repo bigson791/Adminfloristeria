@@ -33,7 +33,7 @@
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
                             <div class="col-6 col-sm-6">
                                 <label>Zona:</label>
-                                <input class="form-control" id="zona" name="zona" type="text" required value="<?php echo set_value('zona'); ?>">
+                                <input class="form-control" id="zona" name="zona" type="text" required value="<?php echo set_value('zona'); ?>" maxlength="3">
                             </div>
                             <div class="col-6 col-sm-6">
                                 <label>Nombre Zona:</label>
@@ -41,11 +41,11 @@
                             </div>
                             <div class="col-6 col-sm-6">
                                 <label>Costo Envío:</label>
-                                <input class="form-control" id="costoEnvio" name="costoEnvio" type="text" required value="<?php echo set_value('costoEnvio'); ?>">
+                                <input class="form-control" id="costoEnvio" name="costoEnvio" type="text" required value="<?php echo set_value('costoEnvio'); ?>" maxlength="3">
                             </div>
                             <div class="col-6 col-sm-6">
                                 <label>Ruta:</label>
-                                <input class="form-control" id="ruta" name="ruta" type="text" value="<?php echo set_value('ruta'); ?>">
+                                <input class="form-control" id="ruta" name="ruta" type="text" value="<?php echo set_value('ruta'); ?>" maxlength="3">
                             </div>
                         </div>
                         <div class="text-center" style="padding-top: 20px; padding-bottom: 20px">
@@ -88,8 +88,8 @@
                     }
                 });
             });
-            
-           
+
+
             $('#costoEnvio').on('input', function(e) {
                 var inputValor = $(this).val();
 
@@ -107,7 +107,7 @@
             });
 
         });
-        $('#ruta').on('keypress', function(e) {
+        $('#ruta, #zona').on('keypress', function(e) {
             // Obtener el código de la tecla presionada
             var charCode = (e.which) ? e.which : e.keyCode;
 

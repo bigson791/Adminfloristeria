@@ -6,7 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\ClienteModelo;
 use App\Models\DepartamentosModelo;
 use App\Models\EmpresasModelo;
-use App\Models\PedidosModel;
+use App\Models\PedidosDetalleModelo;
 use App\Models\PedidosModelo;
 use App\Models\ProductoModelo;
 use App\Models\SucursalesModelo;
@@ -15,7 +15,7 @@ use App\Models\ZonasEnvioModelo;
 class Pedidos extends BaseController
 {
     protected $pedidos, $empresas, $cliente, $productos, $departamento, $zonaEnvio;
-    protected $reglas, $sucursales;
+    protected $reglas, $sucursales, $detallePedido;
 
     public function __construct()
     {
@@ -26,16 +26,40 @@ class Pedidos extends BaseController
         $this->departamento = new DepartamentosModelo();
         $this->zonaEnvio = new ZonasEnvioModelo();
         $this->sucursales = new SucursalesModelo();
+        $this->detallePedido = new PedidosDetalleModelo();
         helper(['form']);
     }
-    public function index($activo = 'A')
+    public function pedidosPendientes($pendientes = 'P')
     {
 
-        $pedidos = $this->pedidos->where(['pr_estado' => $activo])->findAll();
-        $data = ['titulo' => 'pedidos', 'pedidos' => $pedidos];
+        $pedidos = $this->pedidos->where(['pe_estado' => $pendientes])->findAll();
+        $data = ['titulo' => 'Pedidos Pendientes de Fabricar', 'pedidos' => $pedidos];
 
         echo view('header');
-        echo view('pedidos/pedidos', $data);
+        echo view('pedidos/pedidosPendientes', $data);
+        echo view('footer');
+    }
+
+    public function pedidosEnRuta($enRuta = 'R')
+    {
+
+        $pedidos = $this->pedidos->where(['pe_estado' => $enRuta])->findAll();
+        $data = ['titulo' => 'Pedidos en Ruta', 'pedidos' => $pedidos];
+
+        echo view('header');
+        echo view('pedidos/pedidosEnRuta', $data);
+        echo view('footer');
+    }
+
+
+    public function pedidosEntregados($terminados = 'T')
+    {
+
+        $pedidos = $this->pedidos->where(['pe_estado' => $terminados])->findAll();
+        $data = ['titulo' => 'Pedidos Terminados', 'pedidos' => $pedidos];
+
+        echo view('header');
+        echo view('pedidos/pedidosTerminados', $data);
         echo view('footer');
     }
 
@@ -105,23 +129,73 @@ class Pedidos extends BaseController
 
     public function generateOrder()
     {
-        if ($this->request->getMethod() == 'post' && $this->validate($this->reglas)) {
-            $this->pedidos->save(
-                [
-                    'pr_nombre' => $this->request->getPost('nombreProducto'), 'pr_descripcion' => $this->request->getPost('descripcionProducto'),
-                    'pr_precio_normal' => $this->request->getPost('precioNormal'), 'pr_precio_rebajado' => $this->request->getPost('precioRebajado'),
-                    'pr_imagen' => $this->request->getPost('urlImgProd'), 'pr_empresa' => $this->request->getPost('empresa'),
-                    'pr_estado' => 'A'
-                ]
-            );
-            return redirect()->to(base_url() . "pedidos");
-        } else {
+        date_default_timezone_set('America/Guatemala');
+        $datosDetalle = $this->request->getVar('detallePedido');
+        $encabezado = $this->request->getVar('encabezado');
+        $detalles = json_decode($datosDetalle);
+        $formData = array();
+        parse_str($encabezado, $formData);
+        $session = session();
 
-            $data = ['titulo' => 'Agregar Nuevo Producto', 'validation' => $this->validator];
+        $db      = \Config\Database::connect();
+        $builder = $db->table('fl_ped_enc');
+        $builderDetalle = $db->table('fl_ped_detalle');
 
-            echo view('header');
-            echo view('pedidos/NuevoProducto', $data);
-            echo view('footer');
+        try {
+            $db->transStart(); // Iniciar la transacción
+
+            // Paso 1: Insertar datos en la tabla "pedidos" (encabezado)
+            $encabezadoData = [
+                'pe_paginaweb' => $formData['ordenPW'],
+                'pe_cl_id' => $formData['codigoPersona'],
+                'pe_correlativo' => '',
+                'pe_fecha_pedido' => $formData['fechaPedido'],
+                'pe_nom_recibe' => $formData['nomRecibe'],
+                'pe_fecha_entrega' => $formData['fechaEntrega'],
+                'pe_tel_entrega' => $formData['telRecibe'],
+                'pe_id_dep_entrega' => $formData['departamentos'],
+                'pe_id_mun_entrega' => $formData['municipios'],
+                'pe_zona_entrega' => $formData['zonaEntrega'],
+                'pe_precio_envio' => $formData['costoEnvio'],
+                'pe_dir_entrega' => $formData['dirEntrega'],
+                'pe_text_tarjeta' => $formData['leyendatarjeta'],
+                'pe_observaciones' => $formData['observaciones'],
+                'pe_empresa' => $session->empresa,
+                'pe_sucursal' => $formData['fabrica'],
+                'pe_forma_pago' => $formData['formaPago'],
+                'pe_comprobante_pago' => $formData['comprobante'],
+                'pe_estado' => 'P',
+                'pe_us_realizo' => $session->id_usuario,
+                'pe_creacion' =>  date('Y-m-d H:i')
+            ];
+            $builder->insert($encabezadoData);
+
+            // Obtener el ID del pedido recién insertado
+            $pedido_id = $db->insertID();
+
+
+            foreach ($detalles as $detalle) {
+                $detalleData = [
+                    'dt_enc_id' => $pedido_id,
+                    'dt_pr_id' => $detalle->codigo,
+                    'dt_cantidad' => $detalle->cantidad,
+                    'dt_precio' => $detalle->precio
+                ];
+                $builderDetalle->insert($detalleData);
+            }
+
+            $db->transComplete(); // Finalizar la transacción
+
+            if ($db->transStatus() === false) {
+                $db->transRollback(); // Deshacer la transacción si falla
+            } else {
+                $db->transCommit(); // Confirmar la transacción
+                echo $pedido_id;
+            }
+        } catch (\Exception $e) {
+            $db->transRollback(); // Deshacer la transacción en caso de excepción
+            echo "false";
+            //echo "Error en la transacción: " . $e->getMessage();
         }
     }
 
@@ -186,5 +260,17 @@ class Pedidos extends BaseController
 
         $zonaEnvio = $this->zonaEnvio->where($paramMuni)->findAll();
         return json_encode($zonaEnvio);
+    }
+
+    public function verDetalle($idPedido)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('fl_ped_detalle');
+        $builder->select('fl_productos.pr_imagen, fl_productos.pr_nombre, fl_ped_detalle.dt_cantidad')->where('dt_enc_id', $idPedido);
+        $builder->join('fl_productos', 'fl_productos.pr_id = fl_ped_detalle.dt_pr_id');
+        $query = $builder->get();
+        $result = $query->getResult();
+        $resultJson = json_encode($result);
+        var_dump($resultJson);
     }
 }

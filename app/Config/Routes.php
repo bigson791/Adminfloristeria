@@ -30,7 +30,7 @@ $routes->get('NuevoProducto', 'Productos::newProduct');
 $routes->post('insertarProducto', 'Productos::insertProduct');
 $routes->get('EditarProducto/(:num)', 'Productos::upProduct/$1');
 $routes->post('actualizarProducto', 'Productos::updateProduct');
-$routes->get('eliminarProducto/(:num)','Productos::deleteProduct/$1');
+$routes->get('eliminarProducto/(:num)', 'Productos::deleteProduct/$1');
 $routes->get('ProductosEliminados', 'Productos::seeDeleteProduct');
 $routes->get('reingresarProducto/(:num)', 'Productos::reEnterProduct/$1');
 #/Rutas de productos
@@ -40,7 +40,11 @@ $routes->get('reingresarProducto/(:num)', 'Productos::reEnterProduct/$1');
 $routes->get('pedidos', 'Pedidos::index');
 $routes->get('nuevoPedido/(:num)', 'Pedidos::newOrder/$1');
 $routes->post('obtenerZonasEnvio/(:num)', 'Pedidos::ZonasEnvio/$1');
-
+$routes->post('generarPedido', 'Pedidos::generateOrder');
+$routes->get('pedidosPendientes', 'Pedidos::pedidosPendientes');
+$routes->get('pedidosRuta', 'Pedidos::pedidosEnRuta');
+$routes->get('pedidosCompletados', 'Pedidos::pedidosEntregados');
+$routes->post('verDetallePedido/(:num)', 'Pedidos::verDetalle/$1');
 
 #/Rutas de pedidos
 

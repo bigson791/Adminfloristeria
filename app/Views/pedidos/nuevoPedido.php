@@ -1,6 +1,6 @@
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-4" id="contenedor">
             <div class="row" style="padding-top: 8px; padding-bottom: 8px">
                 <div class="col-8">
                     <h3 class="mt-4"><?php echo $titulo . ' &#8594 ' . $empresa['emp_nombre'] ?></h3>
@@ -37,7 +37,7 @@
                             <div class="row">
                                 <div class="col-lg-6 col-sm-6">
                                     <label hidden>Código cliente:</label>
-                                    <input class="form-control" id="codPagina" name="codigoPersona" type="text" value="<?php echo $cliente['cl_id']; ?>" hidden>
+                                    <input class="form-control" id="codigoPersona" name="codigoPersona" type="text" value="<?php echo $cliente['cl_id']; ?>" hidden>
                                 </div>
                                 <div class="col-lg-12 col-sm-12">
                                     <label>Fecha del Pedido</label>
@@ -342,7 +342,8 @@
 
     <script>
         var detPedido = [],
-            datosEnvio = [];
+            datosEnvio = [],
+            codigoPedido;
         $(document).ready(function() {
             $('#departamentos').on('change', function() {
                 codigoDepto = $(this).val();
@@ -856,23 +857,58 @@
                     })
                 }
             } else {
-                var encabezado = $("#formularioPedido").serialize();
-                var detallePedido = JSON.stringify(detPedido);
-                console.log(detallePedido);
-                console.log(encabezado);
-                $.ajax({
-                    type: "post",
-                    url: "<?php echo base_url() ?>generarPedido",
-                    data: {
-                        encabezado: encabezado,
-                        detallePedido: detallePedido
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        
-                    }
-                });
+                Swal.fire({
+                    title: 'Estas seguro?',
+                    text: "Realmente deseas guardar este pedido",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var encabezado = $("#formularioPedido").serialize();
+                        var detallePedido = JSON.stringify(detPedido);
+                        console.log(detallePedido);
+                        console.log(encabezado);
+                        $.ajax({
+                            async: false,
+                            type: "post",
+                            url: "<?php echo base_url() ?>generarPedido",
+                            data: {
+                                encabezado: encabezado,
+                                detallePedido: detallePedido
+                            },
+                            dataType: "html",
+                            success: function(response) {
+                                if (response != 'falso') {
+                                    // La respuesta es igual a true
+                                    $("#tablaDetalle tbody").empty();
+                                    $("#formularioPedido")[0].reset();
+                                    $("#contenedor").attr("style", "display:none");
+                                    detPedido = [];
+                                    codigoPedido = response.trim();
+                                    Swal.fire({
+                                        title: 'Pedido Registrado',
+                                        icon: 'info',
+                                        html: 'El pedido se ha guardado con éxito.<br>' +
+                                            '<a href="//sweetalert2.github.io" target="_blank" class="btn btn-primary btn-lg">Tarjeta</a> ' +
+                                            '<a href="//sweetalert2.github.io" target="_blank" class="btn btn-info btn-lg" >Envio</a> '+
+                                        '<a href="<?php echo base_url()?>verPedidos" class="btn btn-success btn-lg" >Ver Pedidos</a> ',
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false, // Evitar el cierre al hacer clic afuera
+                                        allowEscapeKey: false, // Evitar el cierre al presionar Esc
 
+                                    })
+                                } else {
+                                    // La respuesta no es true
+                                    console.log('La respuesta no es verdadera (true).');
+                                }
+                            }
+                        });
+                    }
+                })
             }
         }
 
@@ -900,7 +936,7 @@
             swal.fire({
                 icon: 'error',
                 title: '¡Error!',
-                text: 'El campo' + nombreCampo + 'no puede estar vacío',
+                text: 'El campo ' + nombreCampo + ' no puede estar vacío',
             });
             $('#' + nombreCampo).focus();
         }

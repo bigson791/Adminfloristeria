@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PedidosModelo extends Model
+class PedidosDetalleModelo extends Model
 {
-    protected $table      = 'fl_ped_enc';
-    protected $primaryKey = 'pe_id';
+    protected $table      = 'fl_ped_detalle';
+    protected $primaryKey = 'dt_id';
 
     protected $useAutoIncrement = true;
 
@@ -15,17 +15,14 @@ class PedidosModelo extends Model
     protected $useSoftDeletes = false;
 
     protected $allowedFields = [
-        'pe_paginaweb', 'pe_cl_id', 'pe_correlativo', 'pe_fecha_pedido',
-        'pe_nom_recibe', 'pe_fecha_entrega', 'pe_tel_entrega', 'pe_id_dep_entrega', 'pe_id_mun_entrega', 'pe_zona_entrega',
-        'pe_precio_envio', 'pe_dir_entrega', 'pe_text_tarjeta', 'pe_observaciones', 'pe_empresa', 'pe_sucursal', 'pe_forma_pago',
-        'pe_comprobante_pago', 'pe_estado', 'pe_us_realizo', 'pe_us_modifico'
+        'dt_enc_id','dt_pr_id','dt_cantidad', 'dt_precio'
     ];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
-    protected $createdField  = 'pe_creacion';
-    protected $updatedField  = 'pe_edicion';
+    protected $createdField  = '';
+    protected $updatedField  = '';
     protected $deletedField  = 'deleted_at';
 
     // Validation
