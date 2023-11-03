@@ -730,8 +730,6 @@
                 $('#tablaDetalle').on('click', '.btn-Eliminar', function() {
                     const fila = $(this).closest('tr');
                     const data = tablaPedidos.row(fila).data();
-                    console.log(fila);
-                    console.log(data);
                     if (data) {
                         const codigoProducto = data.codigo; // Asegúrate de que 'codigo' sea el nombre correcto de la columna en tus datos
                         console.log(codigoProducto);
@@ -894,8 +892,8 @@
                                         icon: 'info',
                                         html: 'El pedido se ha guardado con éxito.<br>' +
                                             '<a href="//sweetalert2.github.io" target="_blank" class="btn btn-primary btn-lg">Tarjeta</a> ' +
-                                            '<a href="//sweetalert2.github.io" target="_blank" class="btn btn-info btn-lg" >Envio</a> '+
-                                        '<a href="<?php echo base_url()?>verPedidos" class="btn btn-success btn-lg" >Ver Pedidos</a> ',
+                                            '<a href="//sweetalert2.github.io" target="_blank" class="btn btn-info btn-lg" >Envio</a> ' +
+                                            '<a href="<?php echo base_url() ?>pedidosPendientes" class="btn btn-success btn-lg" >Ver Pedidos</a> ',
                                         showConfirmButton: false,
                                         allowOutsideClick: false, // Evitar el cierre al hacer clic afuera
                                         allowEscapeKey: false, // Evitar el cierre al presionar Esc

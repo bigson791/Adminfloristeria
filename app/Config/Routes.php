@@ -5,16 +5,16 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->setDefaultNamespace('App\controllers');
-$routes->setDefaultController('Login');
+$routes->setDefaultNamespace('App\controllers',);
+$routes->setDefaultController('Inicio');
 $routes->setDefaultMethod('index');
-$routes->get('/', 'Productos::index');
+$routes->get('/', 'Inicio::index', ['filter' => 'session']);
 $routes->post('iniciarSesion', 'login::validar');
 $routes->get('logout', 'login::logout');
 
 
 #Rutas de clientes
-$routes->get('clientes', 'Clientes::index');
+$routes->get('clientes', 'Clientes::index', ['filter' => 'session']);
 $routes->get('NuevoCliente', 'Clientes::newCustumer');
 $routes->post('insertarCliente', 'Clientes::insertCustumer');
 $routes->get('EditarCliente/(:num)', 'Clientes::upCustumer/$1');
@@ -44,7 +44,9 @@ $routes->post('generarPedido', 'Pedidos::generateOrder');
 $routes->get('pedidosPendientes', 'Pedidos::pedidosPendientes');
 $routes->get('pedidosRuta', 'Pedidos::pedidosEnRuta');
 $routes->get('pedidosCompletados', 'Pedidos::pedidosEntregados');
-$routes->post('verDetallePedido/(:num)', 'Pedidos::verDetalle/$1');
+$routes->post('verDetallePedido', 'Pedidos::verDetalle');
+$routes->post('terminarPedidos', 'Pedidos::terminarFabricacion');
+
 
 #/Rutas de pedidos
 

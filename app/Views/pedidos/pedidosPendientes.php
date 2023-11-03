@@ -9,7 +9,7 @@
 
             <div class="card mb-4">
                 <div class="table table-responsive"="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                    <table class="table-sm display dataTable dtr-inline collapsed" id="tablaClientes" style="width: 100%;">
+                    <table class="table-sm display dataTable dtr-inline collapsed" id="tablaPedidos" style="width: 100%;">
                         <thead>
                             <th># Pedido</th>
                             <th>Cliente</th>
@@ -72,13 +72,20 @@
                     </a>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-over">
+                    <div>
+                        <h3>Fabricando el pedido No. <strong><span id="noPedidoPantalla"></span></strong></h3>
+                    </div>
+                    <table class="table table-over" id="detallePedido">
                         <thead>
                             <th>Imagen</th>
                             <th>Cantidad</th>
                             <th>Nombre</th>
                         </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
+
                 </div>
                 <div class="modal-footer">
                     <div class="text-center">
@@ -87,7 +94,7 @@
                                 <button type="button" class="btn btn-secondary btnCerrarModal" style="float: left" data-dismiss="modal">Cancelar</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                <a type="button" class="btn btn-info btn-ok" style="float: right; color: white">Terminar</a>
+                                <a type="button" class="btn btn-info btn-ok" style="float: right; color: white" onclick="finalizarFabricacionPedido();">Terminar</a>
                             </div>
                         </div>
                     </div>
@@ -97,9 +104,9 @@
     </div>
 
     <script>
-        var urlToDelete;
+        var urlToDelete, idPedido;
         $(document).ready(function() {
-            var tablaClientes = $('#tablaClientes').DataTable({
+            var tablaPedidos = $('#tablaPedidos').DataTable({
                 responsive: true,
                 rowReorder: {
                     selector: 'td:nth-child(2)'
@@ -129,23 +136,20 @@
                     }
                 },
             });
-            $('#tablaClientes').on('click', '.btn-VerDetalles', function() {
+            $('#tablaPedidos').on('click', '.btn-VerDetalles', function() {
+
                 urlToDelete = $(this).data('href');
                 $('#modalConfirmacionCliente').modal('show');
-                $.ajax({
-                    type: "post",
-                    url: "<?php echo base_url() ?>verDetallePedido/" + 25,
-                    data: "data",
-                    dataType: "json",
-                    success: function(response) {
-
-                    }
-                });
+                const fila = $(this).closest('tr');
+                const data = tablaPedidos.row(fila).data();
+                numeroPedido = data[0];
+                verTablaDetallePedido(numeroPedido);
             })
 
             $('.btnCerrarModal').on('click', function() {
                 $('#modalConfirmacionCliente').modal('hide');
-                console.log("He presionado el boton");
+                var tablaBody = $('#detallePedido').find('tbody');
+                tablaBody.empty();
             })
 
             $('#modalConfirmacionCliente').on('click', '.btn-ok', function() {
@@ -155,4 +159,84 @@
                 }
             });
         });
+
+        function verTablaDetallePedido(numeroPedido) {
+            $.ajax({
+                url: "<?php echo base_url() ?>verDetallePedido",
+                type: "post",
+                data: {
+                    idPedido: numeroPedido
+                },
+                cache: false,
+                dataType: "json",
+                success: function(data) {
+                    if (data) {
+                        var tablaBody = $('#detallePedido').find('tbody');
+                        $('#noPedidoPantalla').text(data[0].dt_enc_id);
+                        // Limpiar la tabla antes de agregar nuevos datos
+                        tablaBody.empty();
+
+                        // Agregar filas con datos
+                        for (var i = 0; i < data.length; i++) {
+                            var fila = "<tr>";
+                            fila += "<td><img src='" + data[i].pr_imagen + "' width='250px'></td>";
+                            fila += "<td>" + data[i].pr_nombre + "</td>";
+                            fila += "<td>" + data[i].dt_cantidad + "</td>";
+                            fila += "</tr>";
+
+                            tablaBody.append(fila);
+                        }
+                    } else {
+                        $('#modalConfirmacionCliente').find('modal-body').html('<H2>Ha ocurrido un error, contacta a soporte</H2>');
+                    }
+
+                }
+            });
+        }
+
+        function finalizarFabricacionPedido() {
+            var numeroPedido = $('#noPedidoPantalla').text().trim();
+            console.log(numeroPedido);
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "Deseas finalizar la fabricación del pedido No. " + numeroPedido,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?php echo base_url() ?>terminarPedidos",
+                        type: "post",
+                        data: {
+                            idPedido: numeroPedido
+                        },
+                        cache: false,
+                        dataType: "html",
+                        success: function(data) {
+                            if (data.toLowerCase() === 'true') {
+                                $('#modalConfirmacionCliente').modal('hide');
+                                swal.fire({
+                                    icon: 'success',
+                                    title: 'Pedido Finalizado',
+                                    text: 'El pedido se ha finalizado correctamente',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                                location.href = location.href;
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Ha ocurrido un error, vuelve a intentarlo'
+                                })
+                            }
+                        }
+                    });
+                }
+            })
+        }
     </script>

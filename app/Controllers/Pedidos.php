@@ -242,6 +242,20 @@ class Pedidos extends BaseController
         return redirect()->to(base_url() . "pedidos");
     }
 
+    public function terminarFabricacion()
+    {
+        $numeroPedido = $this->request->getVar('idPedido');
+        if ($numeroPedido) {
+            $this->pedidos->update(
+                $numeroPedido,
+                ['pe_estado' => 'R']
+            );
+            return "true";
+        } else {
+            return "error";
+        }
+    }
+
     public function reEnterProduct($idPedido)
     {
         $this->pedidos->update(
@@ -262,15 +276,16 @@ class Pedidos extends BaseController
         return json_encode($zonaEnvio);
     }
 
-    public function verDetalle($idPedido)
+    public function verDetalle()
     {
+        $idPedido = intval($this->request->getVar('idPedido'));
         $db = \Config\Database::connect();
         $builder = $db->table('fl_ped_detalle');
-        $builder->select('fl_productos.pr_imagen, fl_productos.pr_nombre, fl_ped_detalle.dt_cantidad')->where('dt_enc_id', $idPedido);
+        $builder->select('fl_productos.pr_imagen, fl_productos.pr_nombre, fl_ped_detalle.dt_cantidad, fl_ped_detalle.dt_enc_id')->where('dt_enc_id', $idPedido);
         $builder->join('fl_productos', 'fl_productos.pr_id = fl_ped_detalle.dt_pr_id');
         $query = $builder->get();
         $result = $query->getResult();
         $resultJson = json_encode($result);
-        var_dump($resultJson);
+        return $resultJson;
     }
 }
