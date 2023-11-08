@@ -52,25 +52,31 @@
                                     <option value="">Selecciona una opción</option>
                                     <?php foreach ($empresas as $empresa) { ?>
                                         <option value="<?php echo $empresa['emp_id']; ?>" <?php if ($empresa['emp_id'] ==  set_value('empresa')) {
-                                                                                            echo 'selected';
-                                                                                        } ?>><?php echo $empresa['emp_nombre'] ?></option>
+                                                                                                echo 'selected';
+                                                                                            } ?>><?php echo $empresa['emp_nombre'] ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <label>usuario:</label>
-                                <input class="form-control" id="usuario" name="usuario" type="text" required value="<?php echo set_value('usuario'); ?>">
+                                <label>Sucursal:</label>
+                                <select class="form-control form-select" id="sucursal" name="sucursal" required>
+                                    <option value="0">TODAS LAS SUCURSALES</option>        
+                                </select>
                             </div>
                         </div>
                         <div class="row" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 col-sm-4">
+                                <label>usuario:</label>
+                                <input class="form-control" id="usuario" name="usuario" type="text" required value="<?php echo set_value('usuario'); ?>">
+                            </div>
+                            <div class="col-12 col-sm-4">
                                 <label>Contraseña:</label>
                                 <div class="input-group">
-                                    <input type="password" id="passwrd" name="passwrd"class="form-control" required value="<?php echo set_value('passwrd'); ?>" >
+                                    <input type="password" id="passwrd" name="passwrd" class="form-control" required value="<?php echo set_value('passwrd'); ?>">
                                     <button type="button" class="btn btn-outline-secondary" id="mostrarPassword"><i class="fa-regular fa-eye"></i></button>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 col-sm-4">
                                 <label>Repetir Contraseña:</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="repasswrd" name="repasswrd" value="<?php echo set_value('repasswrd'); ?>">
@@ -119,6 +125,33 @@
                         passwordField.attr("type", "password");
                     }, 5000); // Cambia 5000 por la duración en milisegundos que desees
                 }
+            });
+
+            $('#empresa').on('change', function() {
+                datosEnvio = [];
+                empresa = $(this).val();
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url(); ?>obtenerSucursales/" + empresa,
+                    data: "data",
+                    dataType: "json",
+                    success: function(response) {
+                        var $select = $('#sucursal');
+
+                        // Limpiar el select (opcional)
+                        $select.empty().append('<option value="0">TODAS LAS SUCURSALES</option>');
+
+                        // Agregar opciones al select basadas en la respuesta AJAX
+                        $.each(response, function(index, item) {
+                            datosEnvio.push(item);
+                            $select.append($('<option>', {
+                                value: item.suc_id,
+                                text: item.suc_nombre
+                            }));
+                        });
+
+                    }
+                });
             });
         });
         $('#telefono').on('keypress', function(e) {

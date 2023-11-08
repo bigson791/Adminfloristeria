@@ -9,7 +9,7 @@
             <div>
                 <p>
                     <a href="<?php echo base_url() ?>NuevoUsuario" class="btn btn-info" style="color: white;"> <i class="fa-solid fa-user-plus"></i> Agregar Usuario</a>
-                    <a href="<?php echo base_url() ?>ClientesEliminados" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
+                    <a href="<?php echo base_url() ?>UsuariosEliminados" class="btn btn-danger"> <i class="fa-regular fa-eye"></i> Ver Eliminados</a>
                 </p>
             </div>
             <div class="card mb-4">
@@ -21,6 +21,7 @@
                             <th>Rol</th>
                             <th>Caja</th>
                             <th>Empresa</th>
+                            <th>Sucursal</th>
                             <th>Usuario</th>                            
                             <th></th>
                             <th></th>
@@ -33,6 +34,7 @@
                                     <td><?php echo $dato['us_rol']; ?></td>
                                     <td><?php echo $dato['us_id_caja'];?></td>
                                     <td><?php echo $dato['us_empresa']; ?></td>
+                                    <td><?php echo $dato['us_sucursal']; ?></td>
                                     <td><?php echo $dato['us_usuario']; ?></td>
                                     <td><a href="<?php echo base_url() . 'EditarUsuario/' . $dato['us_id'] ?>" class="btn btn-warning " title="Editar Cliente"> <i class="fa-solid fa-pen"></i></a></td>
                                     <td><a id="eliminarCliente" href="#" data-href="<?php echo base_url() . 'eliminarUsuario/' . $dato['us_id'] ?>" class="btn btn-danger btn-EliminarCliente" title="Eliminar Cliente"><i class="fa-solid fa-trash"></i></a></td>

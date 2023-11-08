@@ -105,7 +105,7 @@ $routes->get('eliminarUsuarios/(:num)', 'Usuarios::deleteUser/$1');
 $routes->get('UsuariosEliminados', 'Usuarios::seeDeleteUser');
 $routes->get('reingresarUsuarios/(:num)', 'Usuarios::reEnterUser/$1');
 $routes->post('actualizarContrasena', 'usuarios::changePassword');
-
+$routes->post('obtenerSucursales/(:num)', 'Usuarios::getSucursales/$1');
 #/Rutas de Usuarios
 
 #Rutas de zonas de envio
@@ -118,6 +118,9 @@ $routes->get('eliminarZonaEnvio/(:num)', 'ZonasEnvio::deleteShipping/$1');
 $routes->get('zonasEnviosEliminadas', 'ZonasEnvio::seeDeleteShipping');
 $routes->get('reingresarZonaEnvio/(:num)', 'ZonasEnvio::reEnterShipping/$1');
 $routes->post('obtenerMunicipios/(:num)', 'ZonasEnvio::getMunicipios/$1');
+
+$routes->get('jljl', 'ZonasEnvio::jljl');
+
 
 
 #/Rutas de zonas de envio

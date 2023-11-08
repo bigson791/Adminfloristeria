@@ -121,7 +121,7 @@ class Usuarios extends BaseController
 
     public function newUser()
     {
-        $Roles = $this->roles->where('rl_estado', 'A')->findAll();
+    $Roles = $this->roles->where('rl_estado', 'A')->findAll();
         $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
         $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
         $data = ['titulo' => 'Agregar Nuevo Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas];
@@ -142,6 +142,7 @@ class Usuarios extends BaseController
                     'us_rol' => $this->request->getPost('rol'),
                     'us_id_caja' => $this->request->getPost('caja'),
                     'us_empresa' => intval($this->request->getPost('empresa')),
+                    'us_sucursal' => $this->request->getPost('sucursal'),
                     'us_usuario' => $this->request->getPost('usuario'),
                     'us_passwrd' => $hash,
                     'us_estado' => 'A'
@@ -167,14 +168,20 @@ class Usuarios extends BaseController
 
     public function upUser($idUser, $valid = null)
     {
+        $paramSuc = array(
+            'suc_estado' => 'A',
+            'suc_empresa' => $session->empresa
+        );
+
+        $sucursales = $this->sucursales->where($paramSuc)->findAll();
         $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
         $Roles = $this->roles->where('rl_estado', 'A')->findAll();
         $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
         $usuario = $this->usuarios->where('us_id', $idUser)->first();
         if ($valid != null) {
-            $data = ['titulo' => 'Editando Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Usuarios' => $usuario, 'validation' => $valid];
+            $data = ['titulo' => 'Editando Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Usuarios' => $usuario, 'Sucursales' => $sucursales,'validation' => $valid];
         } else {
-            $data = ['titulo' => 'Editando Usuario', 'Usuarios' => $usuario, 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas];
+            $data = ['titulo' => 'Editando Usuario', 'Usuarios' => $usuario, 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Sucursales' => $sucursales] ;
         }
         echo view('header');
         echo view('usuarios/editarUsuario', $data);
@@ -262,5 +269,18 @@ class Usuarios extends BaseController
             echo view('usuarios/cambiarContrasena', $data);
             echo view('footer');
         }
+    }
+
+    public function getSucursales($idEmpresa){
+        $paramSuc = array(
+            'suc_estado' => 'A',
+            'suc_empresa' => $idEmpresa
+        );
+
+        $sucursales = $this->sucursales->where($paramSuc)->findAll();
+
+        $datoSucursal = json_encode($sucursales);
+
+        return $datoSucursal;
     }
 }
