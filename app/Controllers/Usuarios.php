@@ -14,7 +14,7 @@ class Usuarios extends BaseController
     protected $sucursales;
     protected $empresas;
     protected $usuarios;
-    protected $reglas;
+    protected $reglas, $reglasEdit;
     protected $roles, $reglasCambiarPassword;
     protected $cajas;
 
@@ -35,6 +35,51 @@ class Usuarios extends BaseController
                     'is_unique' => 'El nombre de usuario {field} ya existe, ingresa uno diferente'
                 ],
             ],
+            'passwrd' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'repasswrd' => [
+                'rules' => 'required|matches[passwrd]',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.',
+                    'matches' => 'Las contraseñas no coinciden'
+                ],
+            ],
+            'nombres' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'apellidos' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'rol' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'caja' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+            'empresa' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'El campo {field} es obligatorio.'
+                ],
+            ],
+        ];
+        $this->reglasEdit = [
             'passwrd' => [
                 'rules' => 'required',
                 'errors' => [
@@ -121,7 +166,7 @@ class Usuarios extends BaseController
 
     public function newUser()
     {
-    $Roles = $this->roles->where('rl_estado', 'A')->findAll();
+        $Roles = $this->roles->where('rl_estado', 'A')->findAll();
         $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
         $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
         $data = ['titulo' => 'Agregar Nuevo Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas];
@@ -168,20 +213,14 @@ class Usuarios extends BaseController
 
     public function upUser($idUser, $valid = null)
     {
-        $paramSuc = array(
-            'suc_estado' => 'A',
-            'suc_empresa' => $session->empresa
-        );
-
-        $sucursales = $this->sucursales->where($paramSuc)->findAll();
         $empresas = $this->empresas->where('emp_estado', 'A')->findAll();
         $Roles = $this->roles->where('rl_estado', 'A')->findAll();
         $Cajas = $this->cajas->where('cj_estado', 'A')->findAll();
         $usuario = $this->usuarios->where('us_id', $idUser)->first();
         if ($valid != null) {
-            $data = ['titulo' => 'Editando Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Usuarios' => $usuario, 'Sucursales' => $sucursales,'validation' => $valid];
+            $data = ['titulo' => 'Editando Usuario', 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Usuarios' => $usuario,  'validation' => $valid];
         } else {
-            $data = ['titulo' => 'Editando Usuario', 'Usuarios' => $usuario, 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas, 'Sucursales' => $sucursales] ;
+            $data = ['titulo' => 'Editando Usuario', 'Usuarios' => $usuario, 'empresas' => $empresas, 'Roles' => $Roles, 'Cajas' => $Cajas];
         }
         echo view('header');
         echo view('usuarios/editarUsuario', $data);
@@ -190,7 +229,7 @@ class Usuarios extends BaseController
 
     public function updateUser()
     {
-        if ($this->request->getMethod() == "post" && $this->validate($this->reglas)) {
+        if ($this->request->getMethod() == "post" && $this->validate($this->reglasEdit)) {
             $hash = password_hash($this->request->getPost('passwrd'), PASSWORD_DEFAULT);
             $this->usuarios->update(
                 $this->request->getPost('codigoUsuario'),
@@ -199,6 +238,7 @@ class Usuarios extends BaseController
                     'us_apellidos' => $this->request->getPost('apellidos'),
                     'us_rol' => $this->request->getPost('rol'),
                     'us_id_caja' => $this->request->getPost('caja'),
+                    'us_sucursal' => $this->request->getPost('sucursal'),
                     'us_empresa' => intval($this->request->getPost('empresa')),
                     'us_passwrd' => $hash,
                     'us_estado' => 'A'
@@ -271,7 +311,8 @@ class Usuarios extends BaseController
         }
     }
 
-    public function getSucursales($idEmpresa){
+    public function getSucursales($idEmpresa)
+    {
         $paramSuc = array(
             'suc_estado' => 'A',
             'suc_empresa' => $idEmpresa

@@ -14,7 +14,7 @@ class UsuariosModel extends Model
     protected $useSoftDeletes = false;
 
     protected $allowedFields = ['us_nombres', 'us_apellidos', 'us_rol','us_id_caja',
-    'us_empresa','us_usuario', 'us_passwrd', 'us_estado'];   
+    'us_empresa','us_usuario', 'us_passwrd', 'us_estado', 'us_sucursal'];   
 
     // Dates
     protected $useTimestamps = true;
